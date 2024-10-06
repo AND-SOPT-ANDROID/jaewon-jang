@@ -1,2 +1,1 @@
-# AND SOPT ANDROID
-![banner_Android](https://github.com/user-attachments/assets/86532c27-d533-42d1-b3e0-39f6958a6ca8)
+![image](https://github.com/user-attachments/assets/44f07e41-e44b-46fa-9b0a-9b93580be14b)
