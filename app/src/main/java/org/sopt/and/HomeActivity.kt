@@ -37,17 +37,14 @@ fun HomeScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(16.dp)
     ) {
-        // 최상단 배너뷰
         item {
             BannerView()
         }
 
-        // 믿고 보는 웨이브 에디터 추천작
         item {
             ListSection(title = "믿고 보는 웨이브 에디터 추천작", list = listOf("item1", "item2", "item3", "item4"))
         }
 
-        // 오늘의 TOP 20
         item {
             ListSection(title = "오늘의 TOP 20", list = listOf("1위", "2위", "3위", "4위"))
         }
@@ -62,11 +59,10 @@ fun BannerView() {
             .height(200.dp)
             .background(Color.DarkGray)
     ) {
-        // Image 대신 Box로 임시 배경 설정
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Gray) // 임시 배경 색상
+                .background(Color.Gray)
         ) {
             Text(
                 text = "Image Placeholder",
@@ -75,7 +71,6 @@ fun BannerView() {
             )
         }
 
-        // 텍스트 배너 설명
         Text(
             text = "여왕벌게임",
             color = Color.White,
@@ -100,7 +95,7 @@ fun ListSection(title: String, list: List<String>) {
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(start = 8.dp) // 리스트 왼쪽 여백 추가
+            modifier = Modifier.padding(start = 8.dp)
         ) {
             items(list.size) { index ->
                 ItemCard(list[index])
@@ -120,14 +115,12 @@ fun ItemCard(item: String) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // 이미지 대신 Box로 임시 배경 설정
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
                 .background(Color.DarkGray, RoundedCornerShape(4.dp))
         ) {
-            // 임시 이미지 대체 텍스트
             Text(
                 text = "Image",
                 color = Color.White,
@@ -137,7 +130,6 @@ fun ItemCard(item: String) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 아이템 텍스트
         Text(text = item, color = Color.White, fontSize = 14.sp)
     }
 }
