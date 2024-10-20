@@ -89,14 +89,14 @@ fun ProfileSection(email: String) {
 
         Spacer(modifier = Modifier.weight(1f))
 
-        IconButton(onClick = { }) {
+        IconButton(onClick = { /* 알림 버튼 동작 */ }) {
             Icon(
                 imageVector = Icons.Default.Notifications,
                 contentDescription = "알림",
                 tint = Color.White
             )
         }
-        IconButton(onClick = { }) {
+        IconButton(onClick = { /* 설정 버튼 동작 */ }) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "설정",
@@ -105,7 +105,7 @@ fun ProfileSection(email: String) {
         }
     }
     Spacer(modifier = Modifier.height(20.dp))
-    
+
     Text(
         text = "첫 결제 시 첫 달 100원!",
         fontSize = 20.sp,
@@ -116,7 +116,7 @@ fun ProfileSection(email: String) {
     )
 
     TextButton(
-        onClick = { },
+        onClick = { /* 구매하기 동작 */ },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 0.dp)

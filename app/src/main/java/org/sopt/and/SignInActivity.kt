@@ -2,6 +2,7 @@ package org.sopt.and
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,29 +29,62 @@ class SignInActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 회원가입으로부터 데이터를 받기 위한 Intent
         registeredId = intent.getStringExtra("ID")
         registeredPassword = intent.getStringExtra("Password")
 
         setContent {
             SignInScreen(
-                onSignUpClick = {
-                    val intent = Intent(this, SignUpActivity::class.java)
-                    startActivity(intent)
-                },
-                onLoginClick = { id, password ->
-                    if (id == registeredId && password == registeredPassword) {
-                        Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, MyActivity::class.java).apply {
-                            putExtra("email", id)  // 이메일을 MyActivity로 전달
-                        }
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                onSignUpClick = ::navigateToSignUp,
+                onLoginClick = ::handleLogin
             )
         }
+    }
+
+    private fun navigateToSignUp() {
+        val intent = Intent(this, SignUpActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun handleLogin(id: String, password: String) {
+        if (validateInput(id, password)) {
+            if (id == registeredId && password == registeredPassword) {
+                showToast("로그인 성공")
+                val intent = Intent(this, MyActivity::class.java).apply {
+                    putExtra("email", id)
+                }
+                startActivity(intent)
+            } else {
+                showToast("로그인 실패")
+            }
+        }
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        val passwordPattern =
+            Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@\$!%*#?&]{8,20}\$")
+        return passwordPattern.matches(password)
+    }
+
+    private fun validateInput(id: String, password: String): Boolean = when {
+        !isValidEmail(id) -> {
+            showToast("유효한 이메일을 입력하세요.")
+            false
+        }
+
+        !isValidPassword(password) -> {
+            showToast("비밀번호는 8~20자 이내로 대소문자, 숫자, 특수문자 조합이어야 합니다.")
+            false
+        }
+
+        else -> true
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -84,23 +118,20 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(60.dp))
 
-
-        // 이메일 입력 필드
         OutlinedTextField(
             value = id,
             onValueChange = { id = it },
             label = { Text("이메일 주소 또는 아이디") },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = Color.DarkGray, // 배경 색상 설정
-                focusedLabelColor = Color.LightGray, // 포커스된 라벨 색상
-                unfocusedLabelColor = Color.Gray // 비포커스된 라벨 색상
+                containerColor = Color.DarkGray,
+                focusedLabelColor = Color.LightGray,
+                unfocusedLabelColor = Color.Gray
             )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 비밀번호 입력 필드
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -113,15 +144,14 @@ fun SignInScreen(
                 }
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = Color.DarkGray, // 배경 색상 설정
-                focusedLabelColor = Color.LightGray, // 포커스된 라벨 색상
-                unfocusedLabelColor = Color.Gray // 비포커스된 라벨 색상
+                containerColor = Color.DarkGray,
+                focusedLabelColor = Color.LightGray,
+                unfocusedLabelColor = Color.Gray
             )
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 로그인 버튼
         Button(
             onClick = { onLoginClick(id, password) },
             modifier = Modifier.fillMaxWidth(),
@@ -133,7 +163,6 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 회원가입 버튼
         TextButton(onClick = onSignUpClick) {
             Text(text = "회원가입", color = Color.Gray)
         }

@@ -22,41 +22,52 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 class SignUpActivity : ComponentActivity() {
+
+    companion object {
+        val PASSWORD_REGEX =
+            Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@\$!%*#?&]{8,20}\$")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SignUpScreen { id, password ->
                 if (validateInput(id, password)) {
-                    // 회원가입 성공 후 로그인 화면으로 이동
                     val intent = Intent(this, SignInActivity::class.java).apply {
                         putExtra("ID", id)
                         putExtra("Password", password)
                     }
                     startActivity(intent)
-                    finish() // 회원가입 화면 종료
+                    finish()
                 }
             }
         }
     }
 
-    // 유효성 검사 함수
-    private fun validateInput(id: String, password: String): Boolean {
-        if (!Patterns.EMAIL_ADDRESS.matcher(id).matches()) {
-            Toast.makeText(this, "유효한 이메일을 입력하세요.", Toast.LENGTH_SHORT).show()
-            return false
+    private fun validateInput(id: String, password: String): Boolean = when {
+        !isValidEmail(id) -> {
+            showToast("유효한 이메일을 입력하세요.")
+            false
         }
 
-        if (!isValidPassword(password)) {
-            Toast.makeText(this, "비밀번호는 8~20자 이내로 대소문자, 숫자, 특수문자 조합이어야 합니다.", Toast.LENGTH_LONG).show()
-            return false
+        !isValidPassword(password) -> {
+            showToast("비밀번호는 8~20자 이내로 대소문자, 숫자, 특수문자 조합이어야 합니다.")
+            false
         }
 
-        return true
+        else -> true
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     private fun isValidPassword(password: String): Boolean {
-        val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@\$!%*#?&]{8,20}\$")
-        return passwordPattern.matches(password)
+        return PASSWORD_REGEX.matches(password)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -80,22 +91,13 @@ fun SignUpScreen(onSignUpComplete: (String, String) -> Unit) {
             text = "회원가입",
             color = Color.White,
             fontSize = 20.sp,
-            modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(60.dp))
 
-
         Text(
-            text = "이메일과 비밀번호만으로",
-            color = Color.White,
-            fontSize = 25.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Text(
-            text = "Wavve를 즐길 수 있어요!",
+            text = "이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!",
             color = Color.White,
             fontSize = 25.sp,
             modifier = Modifier.fillMaxWidth()
@@ -103,18 +105,10 @@ fun SignUpScreen(onSignUpComplete: (String, String) -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
-        // 이메일 입력 필드
-        OutlinedTextField(
+        CustomOutlinedTextField(
             value = id,
             onValueChange = { id = it },
-            label = { Text("wavve@example.com") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = Color.DarkGray, // 배경 색상 설정
-                focusedLabelColor = Color.LightGray, // 포커스된 라벨 색상
-                unfocusedLabelColor = Color.Gray // 비포커스된 라벨 색상
-            )
+            label = "wavve@example.com"
         )
 
         Text(
@@ -126,25 +120,12 @@ fun SignUpScreen(onSignUpComplete: (String, String) -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
-
-        // 비밀번호 입력 필드
-        OutlinedTextField(
+        CustomOutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Wavve 비밀번호 설정") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                TextButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Text(if (passwordVisible) "Hide" else "Show")
-                }
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = Color.DarkGray, // 배경 색상 설정
-                focusedLabelColor = Color.LightGray, // 포커스된 라벨 색상
-                unfocusedLabelColor = Color.Gray // 비포커스된 라벨 색상
-            )
+            label = "Wavve 비밀번호 설정",
+            passwordVisible = passwordVisible,
+            onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
         )
 
         Text(
@@ -156,7 +137,6 @@ fun SignUpScreen(onSignUpComplete: (String, String) -> Unit) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 회원가입 버튼
         Button(
             onClick = { onSignUpComplete(id, password) },
             modifier = Modifier.fillMaxWidth(),
@@ -166,6 +146,36 @@ fun SignUpScreen(onSignUpComplete: (String, String) -> Unit) {
             Text("Wavve 회원가입", fontSize = 18.sp, color = Color.White)
         }
     }
+}
+
+@Composable
+fun CustomOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    passwordVisible: Boolean = false,
+    onPasswordVisibilityChange: (() -> Unit)? = null
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        modifier = Modifier.fillMaxWidth(),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = onPasswordVisibilityChange?.let {
+            {
+                TextButton(onClick = onPasswordVisibilityChange) {
+                    Text(if (passwordVisible) "Hide" else "Show")
+                }
+            }
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedLabelColor = Color.LightGray,
+            unfocusedLabelColor = Color.Gray,
+            focusedBorderColor = Color.LightGray,
+            unfocusedBorderColor = Color.Gray
+        )
+    )
 }
 
 @Preview(showBackground = true)
