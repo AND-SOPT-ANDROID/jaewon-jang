@@ -31,6 +31,12 @@
             android:exported="true"
             android:label="Home Activity" />
 
+        <!-- MyActivity 추가 -->
+        <activity
+            android:name=".MyActivity"
+            android:exported="true"
+            android:label="My Activity" />
+
     </application>
 
 </manifest>

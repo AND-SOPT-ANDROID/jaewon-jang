@@ -84,7 +84,6 @@ fun BottomNavigationBar(navController: androidx.navigation.NavHostController) {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
