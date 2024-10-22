@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ANDANDROID"
         tools:targetApi="31">
+
+        <!-- MainActivity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,10 +21,16 @@
             android:theme="@style/Theme.ANDANDROID">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- HomeActivity 추가 -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true"
+            android:label="Home Activity" />
+
     </application>
 
 </manifest>
