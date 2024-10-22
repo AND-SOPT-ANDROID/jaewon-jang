@@ -42,7 +42,10 @@ fun HomeScreen() {
         }
 
         item {
-            ListSection(title = "믿고 보는 웨이브 에디터 추천작", list = listOf("item1", "item2", "item3", "item4"))
+            ListSection(
+                title = "믿고 보는 웨이브 에디터 추천작",
+                list = listOf("item1", "item2", "item3", "item4")
+            )
         }
 
         item {
