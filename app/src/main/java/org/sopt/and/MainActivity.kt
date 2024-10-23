@@ -77,7 +77,7 @@ fun BottomNavigationBar(navController: androidx.navigation.NavHostController) {
             onClick = {
                 val context = navController.context
                 val intent = Intent(context, MyActivity::class.java)
-                intent.putExtra(MyActivity.EXTRA_EMAIL, "example@example.com") // 이메일 전달
+                intent.putExtra(MyActivity.EXTRA_EMAIL, "example@example.com")
                 context.startActivity(intent)
             }
         )

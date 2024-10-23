@@ -51,14 +51,12 @@ class MyActivity : ComponentActivity() {
         }
     }
 
-    // 앱의 시작점 설정 및 네비게이션 초기화
     @Composable
     fun MyApp(email: String) {
         val navController = rememberNavController()
         NavGraph(navController = navController, email = email)
     }
 
-    // 네비게이션 그래프 설정
     @Composable
     fun NavGraph(navController: NavHostController, email: String) {
         NavHost(
@@ -74,13 +72,11 @@ class MyActivity : ComponentActivity() {
         }
     }
 
-    // ViewModel을 사용한 MyScreenContent 화면
     @Composable
     fun MyScreenContent(
         email: String,
         viewModel: MyViewModel = viewModel()
     ) {
-        // StateFlow를 collectAsState로 수집하여 UI에서 사용할 수 있도록 변환
         val profileData by viewModel.profileData.collectAsState()
 
         Column(
@@ -101,7 +97,6 @@ class MyActivity : ComponentActivity() {
         }
     }
 
-    // 프로필 섹션
     @Composable
     fun ProfileSection(email: String, profileData: String) {
         Row(
@@ -146,7 +141,7 @@ class MyActivity : ComponentActivity() {
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
-            text = "프로필 정보: $profileData", // StateFlow로부터 받은 프로필 데이터
+            text = "프로필 정보: $profileData",
             fontSize = 20.sp,
             color = Color.Gray,
             modifier = Modifier.fillMaxWidth()
@@ -160,7 +155,6 @@ class MyActivity : ComponentActivity() {
         }
     }
 
-    // 콘텐츠 섹션
     @Composable
     fun ContentSection(title: String, message: String) {
         Column(
@@ -195,7 +189,6 @@ class MyActivity : ComponentActivity() {
         }
     }
 
-    // 설정 화면
     @Composable
     fun SettingsScreen() {
         Column(
@@ -214,26 +207,21 @@ class MyActivity : ComponentActivity() {
         }
     }
 
-    // ViewModel을 사용한 상태 관리
     class MyViewModel : ViewModel() {
-        // 프로필 데이터를 관리하는 StateFlow
         private val _profileData = MutableStateFlow("프로필 정보")
         val profileData: StateFlow<String> = _profileData
 
-        // 프로필 데이터를 업데이트하는 함수
         fun updateProfile(newData: String) {
             _profileData.value = newData
         }
     }
 
-    // Preview를 위한 MyScreenContent 미리보기
     @Preview(showBackground = true)
     @Composable
     fun PreviewMyScreen() {
         MyScreenContent(email = "unknown@example.com")
     }
 
-    // Preview를 위한 ProfileSection 미리보기
     @Preview(showBackground = true)
     @Composable
     fun PreviewProfileSection() {
