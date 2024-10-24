@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -122,6 +123,8 @@ class SignUpActivity : ComponentActivity() {
                 onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
             )
 
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = "비밀번호는 8~20자 이내로 영문 대소문자, 숫자, 특수문자 중 3가지 이상 혼용하여 입력해 주세요.",
                 color = Color.Gray,
@@ -129,19 +132,65 @@ class SignUpActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = {
-                    if (validateInput(id, password)) {
-                        navController.navigate("signin")
-                    }
-                },
+            Text(
+                text = "또는 다른 서비스 계정으로 가입",
+                color = Color.Gray,
+                fontSize = 14.sp,
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
-                shape = RoundedCornerShape(8.dp)
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text("Wavve 회원가입", fontSize = 18.sp, color = Color.White)
+                Icon(
+                    painter = painterResource(id = R.drawable.kakao1),
+                    contentDescription = "Kakao",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(48.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.naver1),
+                    contentDescription = "Naver",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(48.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.facebook1),
+                    contentDescription = "Facebook",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(48.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.apple1),
+                    contentDescription = "Apple",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(48.dp)
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Button(
+                    onClick = {
+                        if (validateInput(id, password)) {
+                            navController.navigate("signin")
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .align(Alignment.CenterHorizontally),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text("Wavve 회원가입", fontSize = 18.sp, color = Color.White)
+                }
             }
         }
     }

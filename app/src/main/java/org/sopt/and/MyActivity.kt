@@ -23,10 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -47,28 +43,7 @@ class MyActivity : ComponentActivity() {
         }
 
         setContent {
-            MyApp(email)
-        }
-    }
-
-    @Composable
-    fun MyApp(email: String) {
-        val navController = rememberNavController()
-        NavGraph(navController = navController, email = email)
-    }
-
-    @Composable
-    fun NavGraph(navController: NavHostController, email: String) {
-        NavHost(
-            navController = navController,
-            startDestination = "home"
-        ) {
-            composable("home") {
-                MyScreenContent(email = email)
-            }
-            composable("settings") {
-                SettingsScreen()
-            }
+            MyScreenContent(email)
         }
     }
 
@@ -141,18 +116,31 @@ class MyActivity : ComponentActivity() {
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
-            text = "프로필 정보: $profileData",
-            fontSize = 20.sp,
+            text = "  첫 결제 시 첫 달 100원!",
+            fontSize = 15.sp,
             color = Color.Gray,
             modifier = Modifier.fillMaxWidth()
         )
 
         TextButton(
             onClick = { /* 구매하기 동작 */ },
-            modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "구매하기>", color = Color.White, textAlign = TextAlign.Left)
+            Text(text = "구매하기>", color = Color.White, textAlign = TextAlign.Left, fontSize = 15.sp)
         }
+
+        Text(
+            text = "  현재 보유하신 이용권이 없습니다.",
+            fontSize = 15.sp,
+            color = Color.Gray,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        TextButton(
+            onClick = { /* 구매하기 동작 */ },
+        ) {
+            Text(text = "구매하기>", color = Color.White, textAlign = TextAlign.Left, fontSize = 15.sp)
+        }
+
     }
 
     @Composable

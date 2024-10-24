@@ -13,11 +13,10 @@
         android:theme="@style/Theme.ANDANDROID"
         tools:targetApi="31">
 
-        <!-- MainActivity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".navi.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="MainActivity"
             android:theme="@style/Theme.ANDANDROID">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,13 +24,11 @@
             </intent-filter>
         </activity>
 
-        <!-- HomeActivity 추가 -->
         <activity
-            android:name=".HomeActivity"
+            android:name=".navi.HomeActivity"
             android:exported="true"
             android:label="Home Activity" />
 
-        <!-- MyActivity 추가 -->
         <activity
             android:name=".MyActivity"
             android:exported="true"

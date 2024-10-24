@@ -1,6 +1,5 @@
-package org.sopt.and
+package org.sopt.and.navi
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,7 +11,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -51,43 +50,33 @@ fun MainScreen() {
         ) {
             composable("home") { HomeScreen() }
             composable("search") { SearchScreen() }
+            composable("my") { MyScreen(email = "example@example.com") }  // MyScreen 추가
         }
     }
 }
 
 @Composable
 fun BottomNavigationBar(navController: androidx.navigation.NavHostController) {
-    NavigationBar {
+    NavigationBar(
+        containerColor = Color.Black
+    ) {
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-            label = { Text("홈") },
+            icon = { Icon(Icons.Default.Home, contentDescription = "Home", tint = Color.White) },
+            label = { Text("홈", color = Color.White) },
             selected = false,
             onClick = { navController.navigate("home") }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-            label = { Text("검색") },
+            icon = { Icon(Icons.Default.Search, contentDescription = "Search", tint = Color.White) },
+            label = { Text("검색", color = Color.White) },
             selected = false,
             onClick = { navController.navigate("search") }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Person, contentDescription = "MY") },
-            label = { Text("MY") },
+            icon = { Icon(Icons.Default.Person, contentDescription = "MY", tint = Color.White) },
+            label = { Text("MY", color = Color.White) },
             selected = false,
-            onClick = {
-                val context = navController.context
-                val intent = Intent(context, MyActivity::class.java)
-                intent.putExtra(MyActivity.EXTRA_EMAIL, "example@example.com")
-                context.startActivity(intent)
-            }
+            onClick = { navController.navigate("my") }
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    MyApplicationTheme {
-        MainScreen()
     }
 }

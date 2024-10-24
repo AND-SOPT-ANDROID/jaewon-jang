@@ -5,6 +5,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -76,13 +78,11 @@ class SignInActivity : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "Wavve",
-                color = Color.White,
-                fontSize = 30.sp,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Wavve Logo",
+                modifier = Modifier
+                    .size(100.dp)
             )
 
             Spacer(modifier = Modifier.height(60.dp))
@@ -127,18 +127,64 @@ class SignInActivity : ComponentActivity() {
                         navController.navigate("signup")
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(20.dp)
             ) {
                 Text("로그인", fontSize = 18.sp, color = Color.White)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             TextButton(onClick = { navController.navigate("signup") }) {
                 Text(text = "회원가입", color = Color.Gray)
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "또는 다른 서비스 계정으로 로그인",
+                color = Color.Gray,
+                fontSize = 14.sp,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.kakao1),
+                    contentDescription = "Kakao",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(48.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.naver1),
+                    contentDescription = "Naver",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(48.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.facebook1),
+                    contentDescription = "Facebook",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(48.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.apple1),
+                    contentDescription = "Apple",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(48.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 
