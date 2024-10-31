@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Patterns
 import android.widget.Toast
 
+// 확장 함수(SignIn, SignUp)
 val PASSWORD_REGEX = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@\$!%*#?&]{8,20}\$")
 
 fun validateInput(context: Context, id: String, password: String): Boolean {
