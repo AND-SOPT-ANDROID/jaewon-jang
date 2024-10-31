@@ -1,4 +1,4 @@
-package org.sopt.and.Common
+package org.sopt.and.common
 
 import android.content.Context
 import android.util.Patterns

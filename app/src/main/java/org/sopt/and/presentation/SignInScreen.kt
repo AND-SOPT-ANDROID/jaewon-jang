@@ -4,7 +4,6 @@ package org.sopt.and.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,21 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.R
-import org.sopt.and.Common.validateInput
-import org.sopt.and.presentation.common.AppleLoginIcon
-import org.sopt.and.presentation.common.FacebookLoginIcon
-import org.sopt.and.presentation.common.KakaoLoginIcon
-import org.sopt.and.presentation.common.LoginButton
-import org.sopt.and.presentation.common.NaverLoginIcon
+import org.sopt.and.common.validateInput
+import org.sopt.and.common.AppleLoginIcon
+import org.sopt.and.common.FacebookLoginIcon
+import org.sopt.and.common.KakaoLoginIcon
+import org.sopt.and.common.LoginButton
+import org.sopt.and.common.LoginField
+import org.sopt.and.common.NaverLoginIcon
+import org.sopt.and.common.PasswordField
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(
     onSignUpClick: () -> Unit,
@@ -53,36 +51,18 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(60.dp))
 
-        OutlinedTextField(
+        LoginField(
             value = id,
-            onValueChange = { id = it },
-            label = { Text("이메일 주소 또는 아이디") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = Color.DarkGray,
-                focusedLabelColor = Color.LightGray,
-                unfocusedLabelColor = Color.Gray
-            )
+            onValueChange = { id = it }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
+        PasswordField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("비밀번호") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                TextButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Text(if (passwordVisible) "Hide" else "Show")
-                }
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = Color.DarkGray,
-                focusedLabelColor = Color.LightGray,
-                unfocusedLabelColor = Color.Gray
-            )
+            passwordVisible = passwordVisible,
+            onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
         )
 
         Spacer(modifier = Modifier.height(24.dp))

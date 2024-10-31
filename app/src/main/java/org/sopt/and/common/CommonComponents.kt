@@ -1,15 +1,9 @@
-package org.sopt.and.presentation.common
+package org.sopt.and.common
 
-import android.content.Context
-import android.util.Patterns
-import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -21,9 +15,8 @@ import org.sopt.and.R
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextField
 
 // SocialLoginIcon(SignIn, SignUp)
 @Composable
@@ -87,4 +80,51 @@ fun LoginButton(onClick: () -> Unit) {
     ) {
         Text("로그인", fontSize = 18.sp, color = Color.White)
     }
+}
+//로그인 필드(SingIn)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginField(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text("이메일 주소 또는 아이디") },
+        modifier = Modifier.fillMaxWidth(),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = Color.DarkGray,
+            focusedLabelColor = Color.LightGray,
+            unfocusedLabelColor = Color.Gray
+        )
+    )
+}
+
+//비밀번호 필드(SignIn)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PasswordField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    passwordVisible: Boolean,
+    onPasswordVisibilityChange: () -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text("비밀번호") },
+        modifier = Modifier.fillMaxWidth(),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            TextButton(onClick = onPasswordVisibilityChange) {
+                Text(if (passwordVisible) "Hide" else "Show")
+            }
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = Color.DarkGray,
+            focusedLabelColor = Color.LightGray,
+            unfocusedLabelColor = Color.Gray
+        )
+    )
 }
