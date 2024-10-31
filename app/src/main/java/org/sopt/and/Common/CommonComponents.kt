@@ -1,0 +1,68 @@
+package org.sopt.and.presentation.common
+
+import android.content.Context
+import android.util.Patterns
+import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import org.sopt.and.R
+
+@Composable
+fun KakaoLoginIcon(onClick: () -> Unit = {}) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = R.drawable.kakao1),
+            contentDescription = "Kakao",
+            tint = Color.Unspecified,
+            modifier = Modifier.size(48.dp)
+        )
+    }
+}
+
+@Composable
+fun NaverLoginIcon(onClick: () -> Unit = {}) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = R.drawable.naver1),
+            contentDescription = "Naver",
+            tint = Color.Unspecified,
+            modifier = Modifier.size(48.dp)
+        )
+    }
+}
+
+@Composable
+fun FacebookLoginIcon(onClick: () -> Unit = {}) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = R.drawable.facebook1),
+            contentDescription = "Facebook",
+            tint = Color.Unspecified,
+            modifier = Modifier.size(48.dp)
+        )
+    }
+}
+
+@Composable
+fun AppleLoginIcon(onClick: () -> Unit = {}) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = R.drawable.apple1),
+            contentDescription = "Apple",
+            tint = Color.Unspecified,
+            modifier = Modifier.size(48.dp)
+        )
+    }
+}

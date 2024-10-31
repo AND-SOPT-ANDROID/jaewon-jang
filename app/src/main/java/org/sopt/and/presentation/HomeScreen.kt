@@ -1,11 +1,17 @@
-package org.sopt.and.navi
+package org.sopt.and.presentation
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -22,21 +28,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
 
-class HomeActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            HomeScreen()
-        }
-    }
-}
-
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    paddingValues: PaddingValues
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black),
+            .background(Color.Black)
+            .padding(paddingValues),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(16.dp)
     ) {
@@ -111,7 +111,7 @@ fun BannerView() {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
-        items(5) { index ->
+        items(5) { _ ->
             Box(
                 modifier = Modifier
                     .width(300.dp)
@@ -174,5 +174,5 @@ fun ItemCard(imageResId: Int) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
-    HomeScreen()
+    HomeScreen(paddingValues = PaddingValues(0.dp))
 }

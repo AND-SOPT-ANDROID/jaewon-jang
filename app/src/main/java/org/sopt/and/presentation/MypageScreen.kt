@@ -1,4 +1,4 @@
-package org.sopt.and.navi
+package org.sopt.and.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,15 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun MyScreen(
+fun MypageScreen(
     email: String,
-    viewModel: MyViewModel = viewModel()
 ) {
-    val profileData by viewModel.profileData.collectAsState()
 
     Column(
         modifier = Modifier
@@ -36,7 +32,7 @@ fun MyScreen(
             .background(Color.Black)
             .padding(16.dp)
     ) {
-        ProfileSection(email = email, profileData = profileData)
+        ProfileSection(email = email)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -49,7 +45,7 @@ fun MyScreen(
 }
 
 @Composable
-fun ProfileSection(email: String, profileData: String) {
+fun ProfileSection(email: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -155,21 +151,5 @@ fun ContentSection(title: String, message: String) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewMyScreen() {
-    MyScreen(email = "unknown@example.com")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewProfileSection() {
-    ProfileSection(email = "example@example.com", profileData = "프로필 정보")
-}
-
-// ViewModel 관련
-class MyViewModel : androidx.lifecycle.ViewModel() {
-    private val _profileData = MutableStateFlow("프로필 정보")
-    val profileData: StateFlow<String> = _profileData
-
-    fun updateProfile(newData: String) {
-        _profileData.value = newData
-    }
+    MypageScreen(email = "unknown@example.com")
 }

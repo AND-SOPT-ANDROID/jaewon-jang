@@ -12,9 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ANDANDROID"
         tools:targetApi="31">
-
         <activity
-            android:name=".navi.MainActivity"
+            android:name=".navi.WavveActivity"
             android:exported="true"
             android:label="MainActivity"
             android:theme="@style/Theme.ANDANDROID">
@@ -23,15 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".navi.HomeActivity"
-            android:exported="true"
-            android:label="Home Activity" />
-
-        <activity
-            android:name=".MyActivity"
-            android:exported="true"
-            android:label="My Activity" />
     </application>
 
 </manifest>
