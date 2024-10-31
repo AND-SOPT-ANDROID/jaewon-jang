@@ -23,6 +23,7 @@ import org.sopt.and.Common.validateInput
 import org.sopt.and.presentation.common.AppleLoginIcon
 import org.sopt.and.presentation.common.FacebookLoginIcon
 import org.sopt.and.presentation.common.KakaoLoginIcon
+import org.sopt.and.presentation.common.LoginButton
 import org.sopt.and.presentation.common.NaverLoginIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,19 +87,10 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(
-            onClick = {
-                if (validateInput(context, id, password)) {
-                    onSignInClick()
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Text("로그인", fontSize = 18.sp, color = Color.White)
+        LoginButton {
+            if (validateInput(context, id, password)) {
+                onSignInClick()
+            }
         }
 
         Spacer(modifier = Modifier.height(5.dp))

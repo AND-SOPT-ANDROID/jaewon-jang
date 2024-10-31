@@ -18,7 +18,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.material3.Text
 
+// SocialLoginIcon(SignIn, SignUp)
 @Composable
 fun KakaoLoginIcon(onClick: () -> Unit = {}) {
     IconButton(onClick = onClick) {
@@ -64,5 +71,20 @@ fun AppleLoginIcon(onClick: () -> Unit = {}) {
             tint = Color.Unspecified,
             modifier = Modifier.size(48.dp)
         )
+    }
+}
+
+//로그인 버튼(SignIn)
+@Composable
+fun LoginButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Text("로그인", fontSize = 18.sp, color = Color.White)
     }
 }
