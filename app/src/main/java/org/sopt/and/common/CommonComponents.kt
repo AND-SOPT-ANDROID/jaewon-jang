@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
+import org.sopt.and.presentation.CustomOutlinedTextField
 
 // SocialLoginIcon(SignIn, SignUp)
 @Composable
@@ -126,5 +127,52 @@ fun PasswordField(
             focusedLabelColor = Color.LightGray,
             unfocusedLabelColor = Color.Gray
         )
+    )
+}
+//회원가입 버튼(SignUp)
+@Composable
+fun SignUpButton(
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Text("Wavve 회원가입", fontSize = 18.sp, color = Color.White)
+    }
+}
+
+//비밀번호 등록 필드(SignUp)
+@Composable
+fun PasswordInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    passwordVisible: Boolean,
+    onPasswordVisibilityChange: () -> Unit
+) {
+    CustomOutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = "Wavve 비밀번호 설정",
+        passwordVisible = passwordVisible,
+        onPasswordVisibilityChange = onPasswordVisibilityChange
+    )
+}
+
+//로그인 등록 필드(SignUp)
+@Composable
+fun EmailInputField(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
+    CustomOutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = "wavve@example.com",
+        passwordVisible = true // 이메일 입력은 항상 보이도록 설정
     )
 }

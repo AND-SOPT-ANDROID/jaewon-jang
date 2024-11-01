@@ -5,26 +5,25 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
-import org.sopt.and.R
-import org.sopt.and.presentation.common.AppleLoginIcon
-import org.sopt.and.presentation.common.FacebookLoginIcon
-import org.sopt.and.presentation.common.KakaoLoginIcon
-import org.sopt.and.presentation.common.NaverLoginIcon
+import org.sopt.and.common.AppleLoginIcon
+import org.sopt.and.common.EmailInputField
+import org.sopt.and.common.FacebookLoginIcon
+import org.sopt.and.common.KakaoLoginIcon
+import org.sopt.and.common.NaverLoginIcon
+import org.sopt.and.common.PasswordInputField
+import org.sopt.and.common.SignUpButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,13 +61,13 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        EmailInputField(value = id, onValueChange = { id = it })
 
-        CustomOutlinedTextField(
-            value = id,
-            onValueChange = { id = it },
-            label = "wavve@example.com",
-            passwordVisible = true
-
+        Text(
+            text = "로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요.",
+            color = Color.Gray,
+            fontSize = 12.sp,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Text(
@@ -80,10 +79,9 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomOutlinedTextField(
+        PasswordInputField(
             value = password,
             onValueChange = { password = it },
-            label = "Wavve 비밀번호 설정",
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
         )
@@ -122,21 +120,11 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            Button(
-                onClick = {
-                    if (validateInput(context, id, password)) {
-                        onSignUpClick()
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .align(Alignment.CenterHorizontally),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text("Wavve 회원가입", fontSize = 18.sp, color = Color.White)
-            }
+            SignUpButton(onClick = {
+                if (validateInput(context, id, password)) {
+                    onSignUpClick()
+                }
+            })
         }
     }
 }
@@ -186,5 +174,11 @@ fun CustomOutlinedTextField(
             }
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SignUpScreenPreview() {
+    SignUpScreen(onSignUpClick = {})
 }
 
