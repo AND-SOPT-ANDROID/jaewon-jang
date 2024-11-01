@@ -2,24 +2,18 @@ package org.sopt.and.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.sopt.and.common.ContentSection
+import org.sopt.and.common.ProfileActionButtons
+import org.sopt.and.common.ProfileEmail
+import org.sopt.and.common.ProfileImage
+import org.sopt.and.common.PurchaseButton
+import org.sopt.and.common.PurchaseMessage
 
 @Composable
 fun MypageScreen(
@@ -48,105 +42,31 @@ fun MypageScreen(
 fun ProfileSection(email: String) {
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Box(
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-                .background(Color.Blue)
-        )
+        ProfileImage()
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        Text(
-            text = email,
-            fontSize = 20.sp,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
-        )
+        ProfileEmail(email = email)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        IconButton(onClick = { /* 알림 버튼 동작 */ }) {
-            Icon(
-                imageVector = Icons.Default.Notifications,
-                contentDescription = "알림",
-                tint = Color.White
-            )
-        }
-        IconButton(onClick = { /* 설정 버튼 동작 */ }) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "설정",
-                tint = Color.White
-            )
-        }
+        ProfileActionButtons()
     }
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    Text(
-        text = "  첫 결제 시 첫 달 100원!",
-        fontSize = 15.sp,
-        color = Color.Gray,
-        modifier = Modifier.fillMaxWidth()
-    )
+    PurchaseMessage("첫 결제 시 첫 달 100원!")
+    PurchaseButton(onPurchaseClick = { /* 구매하기 동작 */ }, buttonText = "구매하기>")
 
-    TextButton(
-        onClick = { /* 구매하기 동작 */ },
-    ) {
-        Text(text = "구매하기>", color = Color.White, textAlign = TextAlign.Left, fontSize = 15.sp)
-    }
-
-    Text(
-        text = "  현재 보유하신 이용권이 없습니다.",
-        fontSize = 15.sp,
-        color = Color.Gray,
-        modifier = Modifier.fillMaxWidth()
-    )
-
-    TextButton(
-        onClick = { /* 구매하기 동작 */ },
-    ) {
-        Text(text = "구매하기>", color = Color.White, textAlign = TextAlign.Left, fontSize = 15.sp)
-    }
+    PurchaseMessage("현재 보유하신 이용권이 없습니다.")
+    PurchaseButton(onPurchaseClick = { /* 구매하기 동작 */ }, buttonText = "구매하기>")
 }
 
-@Composable
-fun ContentSection(title: String, message: String) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Text(
-            text = title,
-            fontSize = 18.sp,
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .background(Color.Gray, CircleShape)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = message,
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
