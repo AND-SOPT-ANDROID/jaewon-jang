@@ -1,5 +1,6 @@
 package org.sopt.and.common
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
@@ -24,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import org.sopt.and.presentation.CustomOutlinedTextField
@@ -305,5 +309,93 @@ fun ContentSection(title: String, message: String) {
                 color = Color.Gray
             )
         }
+    }
+}
+// TopBar(Home)
+@Composable
+fun TopBar(categories: List<String>) {
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Black)
+            .padding(vertical = 8.dp, horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        items(categories) { category ->
+            Text(
+                text = category,
+                color = Color.Gray,
+                fontSize = 16.sp
+            )
+        }
+    }
+}
+//BannerView(Home)
+@Composable
+fun BannerView(imageResIds: List<Int>) {
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(400.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp)
+    ) {
+        items(imageResIds.size) { index ->
+            Box(
+                modifier = Modifier
+                    .width(300.dp)
+                    .height(400.dp)
+                    .background(Color.DarkGray)
+            ) {
+                Image(
+                    painter = painterResource(id = imageResIds[index]),
+                    contentDescription = "Banner Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+    }
+}
+//list 섹션(Home)
+@Composable
+fun ListSection(title: String, imageList: List<Int>) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = title,
+            color = Color.White,
+            fontSize = 18.sp,
+            modifier = Modifier.padding(8.dp)
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(start = 8.dp)
+        ) {
+            items(imageList.size) { index ->
+                ItemCard(imageResId = imageList[index])
+            }
+        }
+    }
+}
+//이미지 카드(Home)
+@Composable
+fun ItemCard(imageResId: Int) {
+    Column(
+        modifier = Modifier
+            .width(150.dp)
+            .height(200.dp)
+            .background(Color.Gray, RoundedCornerShape(8.dp)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(id = imageResId),
+            contentDescription = "Recommendation Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+        )
     }
 }
