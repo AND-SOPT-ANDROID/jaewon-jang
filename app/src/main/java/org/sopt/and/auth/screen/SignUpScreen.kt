@@ -1,4 +1,4 @@
-package org.sopt.and.presentation
+package org.sopt.and.auth.screen
 
 import android.content.Context
 import android.util.Patterns
@@ -17,18 +17,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.sopt.and.common.AppleLoginIcon
-import org.sopt.and.common.EmailInputField
-import org.sopt.and.common.FacebookLoginIcon
-import org.sopt.and.common.KakaoLoginIcon
-import org.sopt.and.common.NaverLoginIcon
-import org.sopt.and.common.PasswordInputField
-import org.sopt.and.common.SignUpButton
+import org.sopt.and.auth.viewmodel.SignUpViewModel
+import org.sopt.and.auth.component.AppleLoginIcon
+import org.sopt.and.auth.component.EmailInputField
+import org.sopt.and.auth.component.FacebookLoginIcon
+import org.sopt.and.auth.component.KakaoLoginIcon
+import org.sopt.and.auth.component.NaverLoginIcon
+import org.sopt.and.auth.component.PasswordInputField
+import org.sopt.and.auth.component.SignUpButton
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
-    onSignUpClick: () -> Unit = {}
+    onSignUpClick: () -> Unit,
+    viewModel: SignUpViewModel = viewModel()
 ) {
     val context = LocalContext.current
     var id by remember { mutableStateOf("") }
@@ -61,7 +64,8 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        EmailInputField(value = id, onValueChange = { id = it })
+        EmailInputField(value = viewModel.id,
+            onValueChange = { viewModel.id = it })
 
         Text(
             text = "로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요.",
@@ -80,8 +84,8 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         PasswordInputField(
-            value = password,
-            onValueChange = { password = it },
+            value = viewModel.password,
+            onValueChange = { viewModel.password = it },
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
         )
@@ -121,10 +125,16 @@ fun SignUpScreen(
 
         Column(modifier = Modifier.fillMaxWidth()) {
             SignUpButton(onClick = {
-                if (validateInput(context, id, password)) {
+                viewModel.signUp {
                     onSignUpClick()
                 }
             })
+        }
+
+
+        viewModel.errorMessage?.let {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = it, color = Color.Red)
         }
     }
 }

@@ -1,5 +1,4 @@
-package org.sopt.and.presentation
-
+package org.sopt.and.auth.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,19 +15,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.R
+import org.sopt.and.auth.viewmodel.SignInViewModel
 import org.sopt.and.common.validateInput
-import org.sopt.and.common.AppleLoginIcon
-import org.sopt.and.common.FacebookLoginIcon
-import org.sopt.and.common.KakaoLoginIcon
-import org.sopt.and.common.LoginButton
-import org.sopt.and.common.LoginField
-import org.sopt.and.common.NaverLoginIcon
-import org.sopt.and.common.PasswordField
+import org.sopt.and.auth.component.AppleLoginIcon
+import org.sopt.and.auth.component.FacebookLoginIcon
+import org.sopt.and.auth.component.KakaoLoginIcon
+import org.sopt.and.auth.component.LoginButton
+import org.sopt.and.auth.component.LoginField
+import org.sopt.and.auth.component.NaverLoginIcon
+import org.sopt.and.auth.component.PasswordField
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun SignInScreen(
     onSignUpClick: () -> Unit,
     onSignInClick: () -> Unit,
+    viewModel: SignInViewModel = viewModel()
 ) {
     val context = LocalContext.current
     var id by remember { mutableStateOf("") }
@@ -53,14 +55,16 @@ fun SignInScreen(
 
         LoginField(
             value = id,
-            onValueChange = { id = it }
+            onValueChange = { id = it
+                viewModel.id = it}
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         PasswordField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { password = it
+                viewModel.password = it},
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
         )

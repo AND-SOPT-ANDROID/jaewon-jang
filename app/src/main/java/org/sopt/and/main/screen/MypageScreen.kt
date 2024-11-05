@@ -1,24 +1,28 @@
-package org.sopt.and.presentation
+package org.sopt.and.main.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.sopt.and.common.ContentSection
-import org.sopt.and.common.ProfileActionButtons
-import org.sopt.and.common.ProfileEmail
-import org.sopt.and.common.ProfileImage
-import org.sopt.and.common.PurchaseButton
-import org.sopt.and.common.PurchaseMessage
+import org.sopt.and.main.componet.ContentSection
+import org.sopt.and.main.componet.ProfileActionButtons
+import org.sopt.and.main.componet.ProfileEmail
+import org.sopt.and.main.componet.ProfileImage
+import org.sopt.and.main.componet.PurchaseButton
+import org.sopt.and.main.componet.PurchaseMessage
+import org.sopt.and.main.viewmodel.MypageViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun MypageScreen(
-    email: String,
-) {
+    viewModel: MypageViewModel = viewModel()
+) { val email by viewModel::email
 
     Column(
         modifier = Modifier
@@ -71,5 +75,5 @@ fun ProfileSection(email: String) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewMyScreen() {
-    MypageScreen(email = "unknown@example.com")
+    MypageScreen()
 }
