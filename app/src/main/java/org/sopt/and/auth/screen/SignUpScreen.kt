@@ -26,7 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun SignUpScreen(
-    onSignUpClick: () -> Unit,
+    navigateToSignIn: () -> Unit,
     viewModel: SignUpViewModel = viewModel()
 ) {
     val id by viewModel.id.observeAsState("")
@@ -124,7 +124,7 @@ fun SignUpScreen(
         Column(modifier = Modifier.fillMaxWidth()) {
             SignUpButton(onClick = {
                 viewModel.signUp {
-                    onSignUpClick()
+                    navigateToSignIn()
                 }
             })
         }
@@ -164,6 +164,6 @@ fun CustomOutlinedTextField(
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(onSignUpClick = {})
+    SignUpScreen(navigateToSignIn = {})
 }
 

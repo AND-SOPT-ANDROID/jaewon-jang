@@ -12,13 +12,13 @@ fun NavGraphBuilder.wavveNavGraph(
 ) {
     composable(route = "sign_in") {
         SignInScreen(
-            onSignUpClick = { navController.navigateSignUp() },
-            onSignInClick = { navController.navigateMain() }
+            navigateToSignUp = { navController.navigateSignUp() },
+            navigateToMain = { navController.navigateMain() }
         )
     }
     composable(route = "sign_up") {
         SignUpScreen(
-            onSignUpClick = { navController.navigateSignIn() }
+            navigateToSignIn = { navController.navigateSignIn() }
         )
     }
     composable(route = "main") {

@@ -30,8 +30,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun SignInScreen(
-    onSignUpClick: () -> Unit,
-    onSignInClick: () -> Unit,
+    navigateToSignUp: () -> Unit,
+    navigateToMain: () -> Unit,
     viewModel: SignInViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -75,7 +75,7 @@ fun SignInScreen(
 
         SignInLoginButton {
             if (viewModel.isValidInput()) {
-                onSignInClick()
+                navigateToMain()
             } else {
                 errorMessage?.let {
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
@@ -85,7 +85,7 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        TextButton(onClick = onSignUpClick) {
+        TextButton(onClick = navigateToSignUp) {
             Text(text = "회원가입", color = Color.Gray)
         }
 
@@ -119,7 +119,7 @@ fun SignInScreen(
 @Composable
 fun PreviewSignInScreen() {
     SignInScreen(
-        onSignUpClick = {},
-        onSignInClick = {}
+        navigateToSignUp = {},
+        navigateToMain = {}
     )
 }
