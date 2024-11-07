@@ -1,5 +1,6 @@
 package org.sopt.and.auth.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,15 +17,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.R
 import org.sopt.and.auth.viewmodel.SignInViewModel
-import org.sopt.and.common.validateInput
 import org.sopt.and.auth.component.AppleLoginIcon
 import org.sopt.and.auth.component.FacebookLoginIcon
 import org.sopt.and.auth.component.KakaoLoginIcon
-import org.sopt.and.auth.component.LoginButton
-import org.sopt.and.auth.component.LoginField
+import org.sopt.and.auth.component.SignInLoginButton
+import org.sopt.and.auth.component.SignInLoginField
 import org.sopt.and.auth.component.NaverLoginIcon
-import org.sopt.and.auth.component.PasswordField
+import org.sopt.and.auth.component.SignInPasswordField
 import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 @Composable
 fun SignInScreen(
@@ -53,7 +54,7 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(60.dp))
 
-        LoginField(
+        SignInLoginField(
             value = id,
             onValueChange = { id = it
                 viewModel.id = it}
@@ -61,7 +62,7 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        PasswordField(
+        SignInPasswordField(
             value = password,
             onValueChange = { password = it
                 viewModel.password = it},
@@ -71,15 +72,18 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        LoginButton {
-            if (validateInput(context, id, password)) {
+        SignInLoginButton {
+            if (viewModel.isValidInput()) {
                 onSignInClick()
+            } else {
+                viewModel.errorMessage?.let {
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        // 회원가입 버튼
         TextButton(onClick = onSignUpClick) {
             Text(text = "회원가입", color = Color.Gray)
         }

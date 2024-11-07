@@ -2,23 +2,18 @@ package org.sopt.and.auth.viewmodel
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 
 class SignInViewModel : ViewModel() {
-    var id: String = "" // 사용자가 입력한 아이디
-    var password: String = "" // 사용자가 입력한 비밀번호
-    var errorMessage: String? = null // 에러 메시지 저장
+    var id: String = ""
+    var password: String = ""
+    var errorMessage: String? = null
 
-    fun signIn(onSuccess: () -> Unit) {
-        if (validateInput(id, password)) {
-            viewModelScope.launch {
-                // 로그인 처리 로직
-                onSuccess() // 로그인 성공 시 호출
-            }
-        }
+    fun isValidInput(): Boolean {
+        return validateInput(id, password)
     }
 
+
+    // 입력값 검증 함수 (내부에서만 사용)
     private fun validateInput(id: String, password: String): Boolean {
         return when {
             !Patterns.EMAIL_ADDRESS.matcher(id).matches() -> {

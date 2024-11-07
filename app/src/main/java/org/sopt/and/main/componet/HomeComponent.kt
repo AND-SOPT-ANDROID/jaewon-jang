@@ -24,9 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// TopBar(Home)
 @Composable
-fun TopBar(categories: List<String>) {
+fun HomeTopBar(categories: List<String>) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,9 +42,9 @@ fun TopBar(categories: List<String>) {
         }
     }
 }
-//BannerView(Home)
+
 @Composable
-fun BannerView(imageResIds: List<Int>) {
+fun HomeBannerView(imageResIds: List<Int>) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,9 +69,9 @@ fun BannerView(imageResIds: List<Int>) {
         }
     }
 }
-//list 섹션(Home)
+
 @Composable
-fun ListSection(title: String, imageList: List<Int>) {
+fun HomeListSection(title: String, imageList: List<Int>) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = title,
@@ -86,14 +85,14 @@ fun ListSection(title: String, imageList: List<Int>) {
             modifier = Modifier.padding(start = 8.dp)
         ) {
             items(imageList.size) { index ->
-                ItemCard(imageResId = imageList[index])
+                HomeItemCard(imageResId = imageList[index])
             }
         }
     }
 }
-//이미지 카드(Home)
+
 @Composable
-fun ItemCard(imageResId: Int) {
+fun HomeItemCard(imageResId: Int) {
     Column(
         modifier = Modifier
             .width(150.dp)

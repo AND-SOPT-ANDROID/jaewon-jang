@@ -12,9 +12,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
-import org.sopt.and.main.componet.BannerView
-import org.sopt.and.main.componet.ListSection
-import org.sopt.and.main.componet.TopBar
+import org.sopt.and.main.componet.HomeBannerView
+import org.sopt.and.main.componet.HomeListSection
+import org.sopt.and.main.componet.HomeTopBar
 
 @Composable
 fun HomeScreen(
@@ -46,22 +46,22 @@ fun HomeScreen(
         }
 
         item {
-            TopBar(categories = listOf("뉴클래식", "드라마", "예능", "영화", "애니", "해외시리즈"))
+            HomeTopBar(categories = listOf("뉴클래식", "드라마", "예능", "영화", "애니", "해외시리즈"))
         }
 
         item {
-            BannerView(imageResIds = listOf(R.drawable.queenbee, R.drawable.queenbee, R.drawable.queenbee))
+            HomeBannerView(imageResIds = listOf(R.drawable.queenbee, R.drawable.queenbee, R.drawable.queenbee))
         }
 
         item {
-            ListSection(
+            HomeListSection(
                 title = "믿고 보는 웨이브 에디터 추천작",
                 imageList = listOf(R.drawable.mudo, R.drawable.mudo, R.drawable.mudo, R.drawable.mudo)
             )
         }
 
         item {
-            ListSection(
+            HomeListSection(
                 title = "오늘의 TOP 20",
                 imageList = listOf(R.drawable.mudo, R.drawable.mudo, R.drawable.mudo, R.drawable.mudo)
             )

@@ -1,8 +1,5 @@
 package org.sopt.and.auth.screen
 
-import android.content.Context
-import android.util.Patterns
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -19,11 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.auth.viewmodel.SignUpViewModel
 import org.sopt.and.auth.component.AppleLoginIcon
-import org.sopt.and.auth.component.EmailInputField
+import org.sopt.and.auth.component.SignUpEmailInputField
 import org.sopt.and.auth.component.FacebookLoginIcon
 import org.sopt.and.auth.component.KakaoLoginIcon
 import org.sopt.and.auth.component.NaverLoginIcon
-import org.sopt.and.auth.component.PasswordInputField
+import org.sopt.and.auth.component.SignUpPasswordInputField
 import org.sopt.and.auth.component.SignUpButton
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -33,9 +29,6 @@ fun SignUpScreen(
     onSignUpClick: () -> Unit,
     viewModel: SignUpViewModel = viewModel()
 ) {
-    val context = LocalContext.current
-    var id by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
@@ -64,7 +57,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        EmailInputField(value = viewModel.id,
+        SignUpEmailInputField(value = viewModel.id,
             onValueChange = { viewModel.id = it })
 
         Text(
@@ -83,7 +76,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        PasswordInputField(
+        SignUpPasswordInputField(
             value = viewModel.password,
             onValueChange = { viewModel.password = it },
             passwordVisible = passwordVisible,
@@ -138,29 +131,6 @@ fun SignUpScreen(
         }
     }
 }
-
-private fun validateInput(context: Context, id: String, password: String): Boolean {
-    return when {
-        !Patterns.EMAIL_ADDRESS.matcher(id).matches() -> {
-            showToast(context, "유효한 이메일을 입력하세요.")
-            false
-        }
-
-        !PASSWORD_REGEX.matches(password) -> {
-            showToast(context, "비밀번호는 8~20자 이내로 대소문자, 숫자, 특수문자 조합이어야 합니다.")
-            false
-        }
-
-        else -> true
-    }
-}
-
-private fun showToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-}
-
-val PASSWORD_REGEX =
-    Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@\$!%*#?&]{8,20}\$")
 
 @Composable
 fun CustomOutlinedTextField(
