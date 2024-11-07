@@ -18,14 +18,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.R
 import org.sopt.and.auth.viewmodel.SignInViewModel
-import org.sopt.and.auth.component.AppleLoginIcon
-import org.sopt.and.auth.component.FacebookLoginIcon
-import org.sopt.and.auth.component.KakaoLoginIcon
 import org.sopt.and.auth.component.SignInLoginButton
 import org.sopt.and.auth.component.SignInLoginField
-import org.sopt.and.auth.component.NaverLoginIcon
 import org.sopt.and.auth.component.SignInPasswordField
 import androidx.lifecycle.viewmodel.compose.viewModel
+import org.sopt.and.auth.component.SocialLoginIcon
 
 
 @Composable
@@ -101,14 +98,11 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            KakaoLoginIcon { /* Kakao 로그인 클릭 시 동작 */ }
-            NaverLoginIcon { /* Naver 로그인 클릭 시 동작 */ }
-            FacebookLoginIcon { /* Facebook 로그인 클릭 시 동작 */ }
-            AppleLoginIcon { /* Apple 로그인 클릭 시 동작 */ }
+        Row {
+            SocialLoginIcon(iconResId = R.drawable.kakao1, contentDescription = "Kakao") { /* Kakao 로그인 동작 */ }
+            SocialLoginIcon(iconResId = R.drawable.naver1, contentDescription = "Naver") { /* Naver 로그인 동작 */ }
+            SocialLoginIcon(iconResId = R.drawable.facebook1, contentDescription = "Facebook") { /* Facebook 로그인 동작 */ }
+            SocialLoginIcon(iconResId = R.drawable.apple1, contentDescription = "Apple") { /* Apple 로그인 동작 */ }
         }
 
         Spacer(modifier = Modifier.weight(1f))
