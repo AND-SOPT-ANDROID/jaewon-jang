@@ -1,5 +1,6 @@
 package org.sopt.and.auth.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -8,16 +9,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.auth.viewmodel.SignUpViewModel
-import org.sopt.and.auth.component.SignUpEmailInputField
-import org.sopt.and.auth.component.SignUpPasswordInputField
-import org.sopt.and.auth.component.SignUpButton
+import org.sopt.and.auth.component.SignInSignUpTextField
+import org.sopt.and.auth.component.SignInSignUpButton
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.auth.component.SocialLoginIcon
@@ -29,6 +28,7 @@ fun SignUpScreen(
 ) {
     val id by viewModel.id.observeAsState("")
     val password by viewModel.password.observeAsState("")
+    val context = LocalContext.current
     val errorMessage by viewModel.errorMessage.observeAsState()
 
     var passwordVisible by remember { mutableStateOf(false) }
@@ -58,17 +58,15 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SignUpEmailInputField(
+        SignInSignUpTextField(
+            label = "wavve@example.com",
             value = id,
-            onValueChange = { viewModel.updateId(it) }
+            onValueChange = { viewModel.updateId(it) },
+            containerColor = Color.Black,
+            focusedLabelColor = Color.Black,
+            unfocusedLabelColor = Color.DarkGray
         )
 
-        Text(
-            text = "로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요.",
-            color = Color.Gray,
-            fontSize = 12.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
 
         Text(
             text = "로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요.",
@@ -79,12 +77,18 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SignUpPasswordInputField(
+        SignInSignUpTextField(
+            label = "Wavve 비밀번호 설정",
             value = password,
             onValueChange = { viewModel.updatePassword(it) },
+            isPassword = true,
             passwordVisible = passwordVisible,
-            onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
+            onPasswordVisibilityChange = { passwordVisible = !passwordVisible },
+            containerColor = Color.Black,
+            focusedLabelColor = Color.Black,
+            unfocusedLabelColor = Color.DarkGray
         )
+
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -117,44 +121,22 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            SignUpButton(onClick = {
-                viewModel.signUp {
-                    navigateToSignIn()
+            SignInSignUpButton(
+                text = "Wavve 회원가입",
+                backgroundColor = Color.Gray,
+                onClick = {
+                    viewModel.signUp {
+                        navigateToSignIn()
+                    }
+                    errorMessage?.let {
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    }
                 }
-            })
-        }
-
-
-        errorMessage?.let {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = it, color = Color.Red)
+            )
         }
     }
 }
 
-@Composable
-fun CustomOutlinedTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    passwordVisible: Boolean = false,
-    onPasswordVisibilityChange: (() -> Unit)? = null
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        modifier = Modifier.fillMaxWidth(),
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        trailingIcon = onPasswordVisibilityChange?.let {
-            {
-                TextButton(onClick = onPasswordVisibilityChange) {
-                    Text(if (passwordVisible) "Hide" else "Show")
-                }
-            }
-        }
-    )
-}
 
 @Preview(showBackground = true)
 @Composable

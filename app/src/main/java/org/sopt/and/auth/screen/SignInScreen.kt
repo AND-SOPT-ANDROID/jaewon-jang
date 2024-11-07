@@ -18,9 +18,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.R
 import org.sopt.and.auth.viewmodel.SignInViewModel
-import org.sopt.and.auth.component.SignInLoginButton
-import org.sopt.and.auth.component.SignInLoginField
-import org.sopt.and.auth.component.SignInPasswordField
+import org.sopt.and.auth.component.SignInSignUpButton
+import org.sopt.and.auth.component.SignInSignUpTextField
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.auth.component.SocialLoginIcon
 
@@ -54,31 +53,38 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(60.dp))
 
-        SignInLoginField(
+        SignInSignUpTextField(
+            label = "이메일 주소 또는 아이디",
             value = id,
             onValueChange = { viewModel.updateId(it) }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SignInPasswordField(
+        SignInSignUpTextField(
+            label = "비밀번호",
             value = password,
             onValueChange = { viewModel.updatePassword(it) },
+            isPassword = true,
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        SignInLoginButton {
-            if (viewModel.isValidInput()) {
-                navigateToMain()
-            } else {
-                errorMessage?.let {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        SignInSignUpButton(
+            text = "로그인",
+            backgroundColor = Color.Blue,
+            onClick = {
+                if (viewModel.isValidInput()) {
+                    navigateToMain()
+                } else {
+                    errorMessage?.let {
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-        }
+        )
 
         Spacer(modifier = Modifier.height(5.dp))
 
