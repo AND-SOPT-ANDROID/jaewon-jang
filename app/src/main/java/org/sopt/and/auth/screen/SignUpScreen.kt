@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,14 +24,16 @@ import org.sopt.and.auth.component.SignUpPasswordInputField
 import org.sopt.and.auth.component.SignUpButton
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
     onSignUpClick: () -> Unit,
     viewModel: SignUpViewModel = viewModel()
 ) {
-    var passwordVisible by remember { mutableStateOf(false) }
+    val id by viewModel.id.observeAsState("")
+    val password by viewModel.password.observeAsState("")
+    val errorMessage by viewModel.errorMessage.observeAsState()
 
+    var passwordVisible by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,8 +60,10 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SignUpEmailInputField(value = viewModel.id,
-            onValueChange = { viewModel.id = it })
+        SignUpEmailInputField(
+            value = id,
+            onValueChange = { viewModel.updateId(it) }
+        )
 
         Text(
             text = "로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요.",
@@ -77,8 +82,8 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         SignUpPasswordInputField(
-            value = viewModel.password,
-            onValueChange = { viewModel.password = it },
+            value = password,
+            onValueChange = { viewModel.updatePassword(it) },
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
         )
@@ -125,7 +130,7 @@ fun SignUpScreen(
         }
 
 
-        viewModel.errorMessage?.let {
+        errorMessage?.let {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = it, color = Color.Red)
         }

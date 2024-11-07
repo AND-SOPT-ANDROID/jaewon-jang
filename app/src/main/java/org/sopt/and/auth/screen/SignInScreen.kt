@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,8 +35,10 @@ fun SignInScreen(
     viewModel: SignInViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    var id by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val id by viewModel.id.observeAsState("")  // observeAsState를 통해 LiveData 값을 가져옵니다.
+    val password by viewModel.password.observeAsState("")
+    val errorMessage by viewModel.errorMessage.observeAsState()  // LiveData 관찰
+
     var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
@@ -56,16 +59,14 @@ fun SignInScreen(
 
         SignInLoginField(
             value = id,
-            onValueChange = { id = it
-                viewModel.id = it}
+            onValueChange = { viewModel.updateId(it) }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         SignInPasswordField(
             value = password,
-            onValueChange = { password = it
-                viewModel.password = it},
+            onValueChange = { viewModel.updatePassword(it) },
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = !passwordVisible }
         )
@@ -76,7 +77,7 @@ fun SignInScreen(
             if (viewModel.isValidInput()) {
                 onSignInClick()
             } else {
-                viewModel.errorMessage?.let {
+                errorMessage?.let {
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 }
             }
