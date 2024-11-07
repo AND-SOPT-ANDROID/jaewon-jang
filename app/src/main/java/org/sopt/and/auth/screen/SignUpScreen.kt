@@ -20,6 +20,7 @@ import org.sopt.and.auth.component.SignInSignUpButton
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.auth.component.SocialLoginIcon
+import org.sopt.and.auth.viewmodel.SignUpState
 
 @Composable
 fun SignUpScreen(
@@ -28,10 +29,12 @@ fun SignUpScreen(
 ) {
     val id by viewModel.id.observeAsState("")
     val password by viewModel.password.observeAsState("")
+    val signUpState by viewModel.signUpState.observeAsState("")
     val context = LocalContext.current
     val errorMessage by viewModel.errorMessage.observeAsState()
 
     var passwordVisible by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +66,7 @@ fun SignUpScreen(
             value = id,
             onValueChange = { viewModel.updateId(it) },
             containerColor = Color.Black,
-            focusedLabelColor = Color.Black,
+            focusedLabelColor = Color.Gray,
             unfocusedLabelColor = Color.DarkGray
         )
 
@@ -85,7 +88,7 @@ fun SignUpScreen(
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = !passwordVisible },
             containerColor = Color.Black,
-            focusedLabelColor = Color.Black,
+            focusedLabelColor = Color.Gray,
             unfocusedLabelColor = Color.DarkGray
         )
 
@@ -112,10 +115,22 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row {
-            SocialLoginIcon(iconResId = R.drawable.kakao1, contentDescription = "Kakao") { /* Kakao 로그인 동작 */ }
-            SocialLoginIcon(iconResId = R.drawable.naver1, contentDescription = "Naver") { /* Naver 로그인 동작 */ }
-            SocialLoginIcon(iconResId = R.drawable.facebook1, contentDescription = "Facebook") { /* Facebook 로그인 동작 */ }
-            SocialLoginIcon(iconResId = R.drawable.apple1, contentDescription = "Apple") { /* Apple 로그인 동작 */ }
+            SocialLoginIcon(
+                iconResId = R.drawable.kakao1,
+                contentDescription = "Kakao"
+            ) { /* Kakao 로그인 동작 */ }
+            SocialLoginIcon(
+                iconResId = R.drawable.naver1,
+                contentDescription = "Naver"
+            ) { /* Naver 로그인 동작 */ }
+            SocialLoginIcon(
+                iconResId = R.drawable.facebook1,
+                contentDescription = "Facebook"
+            ) { /* Facebook 로그인 동작 */ }
+            SocialLoginIcon(
+                iconResId = R.drawable.apple1,
+                contentDescription = "Apple"
+            ) { /* Apple 로그인 동작 */ }
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -125,11 +140,16 @@ fun SignUpScreen(
                 text = "Wavve 회원가입",
                 backgroundColor = Color.Gray,
                 onClick = {
-                    viewModel.signUp {
-                        navigateToSignIn()
-                    }
-                    errorMessage?.let {
-                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    viewModel.signUp()
+                    when(signUpState) {
+                        is SignUpState.SignUpSuccess -> {Toast.makeText(context, "회원가입 성공", Toast.LENGTH_SHORT).show()
+                            navigateToSignIn() }
+                        is SignUpState.SignUpFailure -> {
+                            errorMessage?.let {
+                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        else -> {}
                     }
                 }
             )

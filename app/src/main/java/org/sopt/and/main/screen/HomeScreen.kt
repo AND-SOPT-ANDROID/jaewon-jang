@@ -5,7 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -15,11 +15,17 @@ import org.sopt.and.R
 import org.sopt.and.main.componet.HomeBannerView
 import org.sopt.and.main.componet.HomeListSection
 import org.sopt.and.main.componet.HomeTopBar
+import org.sopt.and.main.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+    val bannerImages = viewModel.bannerImages.observeAsState(emptyList())
+    val editorRecommendations = viewModel.editorRecommendations.observeAsState(emptyList())
+    val top20List = viewModel.top20List.observeAsState(emptyList())
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -29,12 +35,6 @@ fun HomeScreen(
         contentPadding = PaddingValues(16.dp)
     ) {
         item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
                 Image(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "Wavve Logo",
@@ -42,7 +42,6 @@ fun HomeScreen(
                         .height(24.dp)
                         .width(100.dp)
                 )
-            }
         }
 
         item {
@@ -50,20 +49,20 @@ fun HomeScreen(
         }
 
         item {
-            HomeBannerView(imageResIds = listOf(R.drawable.queenbee, R.drawable.queenbee, R.drawable.queenbee))
+            HomeBannerView(imageResIds = bannerImages.value)
         }
 
         item {
             HomeListSection(
                 title = "믿고 보는 웨이브 에디터 추천작",
-                imageList = listOf(R.drawable.mudo, R.drawable.mudo, R.drawable.mudo, R.drawable.mudo)
+                imageList = editorRecommendations.value
             )
         }
 
         item {
             HomeListSection(
                 title = "오늘의 TOP 20",
-                imageList = listOf(R.drawable.mudo, R.drawable.mudo, R.drawable.mudo, R.drawable.mudo)
+                imageList = top20List.value
             )
         }
     }

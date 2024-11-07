@@ -4,8 +4,12 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+
+sealed class SignUpState {
+    data object Idle: SignUpState()
+    data object SignUpFailure: SignUpState()
+    data object SignUpSuccess: SignUpState()
+}
 
 class SignUpViewModel : ViewModel() {
     private val _id = MutableLiveData<String>()
@@ -17,6 +21,9 @@ class SignUpViewModel : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
+    private val _signUpState = MutableLiveData<SignUpState>(SignUpState.Idle)
+    val signUpState: LiveData<SignUpState> get() = _signUpState
+
     fun updateId(newId: String) {
         _id.value = newId
     }
@@ -25,11 +32,11 @@ class SignUpViewModel : ViewModel() {
         _password.value = newPassword
     }
 
-    fun signUp(onSuccess: () -> Unit) {
+    fun signUp() {
         if (validateInput(_id.value ?: "", _password.value ?: "")) {
-            viewModelScope.launch {
-                onSuccess()
-            }
+            _signUpState.value = SignUpState.SignUpSuccess
+        } else {
+            _signUpState.value = SignUpState.SignUpFailure
         }
     }
 

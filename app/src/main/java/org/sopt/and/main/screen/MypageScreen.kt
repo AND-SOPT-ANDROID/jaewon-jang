@@ -2,6 +2,7 @@ package org.sopt.and.main.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -24,21 +25,18 @@ fun MypageScreen(
 ) {
     val email = viewModel.email.observeAsState("").value
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        ProfileSection(email = email)
+        item { ProfileSection(email = email) }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        item { MypageContentSection(title = "전체 시청내역", message = "시청내역이 없어요.") }
 
-        MypageContentSection(title = "전체 시청내역", message = "시청내역이 없어요.")
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        MypageContentSection(title = "관심 프로그램", message = "관심 프로그램이 없어요.")
+        item { MypageContentSection(title = "관심 프로그램", message = "관심 프로그램이 없어요.") }
     }
 }
 

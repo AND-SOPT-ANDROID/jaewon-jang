@@ -31,9 +31,9 @@ fun SignInScreen(
     viewModel: SignInViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    val id by viewModel.id.observeAsState("")  // observeAsState를 통해 LiveData 값을 가져옵니다.
+    val id by viewModel.id.observeAsState("")
     val password by viewModel.password.observeAsState("")
-    val errorMessage by viewModel.errorMessage.observeAsState()  // LiveData 관찰
+    val errorMessage by viewModel.errorMessage.observeAsState()
 
     var passwordVisible by remember { mutableStateOf(false) }
 

@@ -10,12 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +28,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeTopBar(categories: List<String>) {
@@ -45,27 +52,44 @@ fun HomeTopBar(categories: List<String>) {
 
 @Composable
 fun HomeBannerView(imageResIds: List<Int>) {
-    LazyRow(
+    val coroutineScope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        pageCount = { imageResIds.size }
+    )
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(3000) // 3초마다 페이지 전환
+            coroutineScope.launch {
+                val nextPage = (pagerState.currentPage + 1) % imageResIds.size
+                pagerState.scrollToPage(nextPage)
+            }
+        }
+    }
+
+    HorizontalPager(
+        state = pagerState,
+        beyondViewportPageCount = 1,
         modifier = Modifier
             .fillMaxWidth()
             .height(400.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp)
-    ) {
-        items(imageResIds.size) { index ->
-            Box(
-                modifier = Modifier
-                    .width(300.dp)
-                    .height(400.dp)
-                    .background(Color.DarkGray)
-            ) {
-                Image(
-                    painter = painterResource(id = imageResIds[index]),
-                    contentDescription = "Banner Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        pageSpacing = 8.dp
+    ) { page ->
+        Box(
+            modifier = Modifier
+                .width(300.dp)
+                .height(400.dp)
+                .background(Color.DarkGray, shape = RoundedCornerShape(8.dp)),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Image(
+                painter = painterResource(id = imageResIds[page]),
+                contentDescription = "Banner Image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
@@ -95,8 +119,7 @@ fun HomeListSection(title: String, imageList: List<Int>) {
 fun HomeItemCard(imageResId: Int) {
     Column(
         modifier = Modifier
-            .width(150.dp)
-            .height(200.dp)
+            .size(150.dp, 200.dp)
             .background(Color.Gray, RoundedCornerShape(8.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

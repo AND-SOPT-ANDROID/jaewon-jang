@@ -75,10 +75,10 @@ fun MypageProfileActionButtons() {
 @Composable
 fun MypagePurchaseMessage(message: String) {
     Text(
-        text = message, // 메시지 텍스트
-        fontSize = 15.sp, // 폰트 크기
-        color = Color.Gray, // 글자 색상 회색
-        modifier = Modifier.fillMaxWidth() // 전체 너비를 차지
+        text = message,
+        fontSize = 15.sp,
+        color = Color.Gray,
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
