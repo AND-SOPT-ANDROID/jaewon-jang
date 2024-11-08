@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeTopBar(categories: List<String>) {
@@ -52,7 +50,6 @@ fun HomeTopBar(categories: List<String>) {
 
 @Composable
 fun HomeBannerView(imageResIds: List<Int>) {
-    val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { imageResIds.size }
@@ -60,11 +57,9 @@ fun HomeBannerView(imageResIds: List<Int>) {
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(3000) // 3초마다 페이지 전환
-            coroutineScope.launch {
-                val nextPage = (pagerState.currentPage + 1) % imageResIds.size
-                pagerState.scrollToPage(nextPage)
-            }
+            delay(3000)
+            val nextPage = (pagerState.currentPage + 1) % imageResIds.size
+            pagerState.scrollToPage(nextPage)
         }
     }
 
