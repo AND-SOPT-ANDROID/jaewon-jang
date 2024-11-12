@@ -1,13 +1,17 @@
 package org.sopt.and.main.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.main.componet.MypageContentSection
@@ -21,9 +25,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun MypageScreen(
+    token: String,
     viewModel: MypageViewModel = viewModel()
 ) {
-    val email = viewModel.email.observeAsState("").value
+    val context = LocalContext.current
+    val hobby by viewModel.hobby.observeAsState("")
+    val errorMessage by viewModel.errorMessage.observeAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchMyHobby(token)
+    }
+
+    errorMessage?.let {
+        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+    }
+
 
     LazyColumn(
         modifier = Modifier
@@ -32,7 +48,7 @@ fun MypageScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        item { ProfileSection(email = email) }
+        item { ProfileSection(hobby = hobby ?: "취미 없음") }
 
         item { MypageContentSection(title = "전체 시청내역", message = "시청내역이 없어요.") }
 
@@ -41,7 +57,7 @@ fun MypageScreen(
 }
 
 @Composable
-fun ProfileSection(email: String) {
+fun ProfileSection(hobby: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -53,7 +69,7 @@ fun ProfileSection(email: String) {
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        MypageProfileEmail(email = email)
+        MypageProfileEmail(email = hobby)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -73,5 +89,5 @@ fun ProfileSection(email: String) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewMyScreen() {
-    MypageScreen()
+    MypageScreen(token = "sample_token")
 }

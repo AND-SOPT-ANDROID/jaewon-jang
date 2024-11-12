@@ -20,18 +20,17 @@ import org.sopt.and.auth.component.SignInSignUpButton
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.auth.component.SocialLoginIcon
-import org.sopt.and.auth.viewmodel.SignUpState
 
 @Composable
 fun SignUpScreen(
     navigateToSignIn: () -> Unit,
     viewModel: SignUpViewModel = viewModel()
 ) {
-    val id by viewModel.id.observeAsState("")
+    val username by viewModel.username.observeAsState("")
     val password by viewModel.password.observeAsState("")
-    val signUpState by viewModel.signUpState.observeAsState("")
+    val hobby by viewModel.hobby.observeAsState("")
     val context = LocalContext.current
-    val errorMessage by viewModel.errorMessage.observeAsState()
+    val message by viewModel.message.observeAsState()
 
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -53,7 +52,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(60.dp))
 
         Text(
-            text = "이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!",
+            text = "이름과 비밀번호,취미 입력만으로\nWavve를 즐길 수 있어요!",
             color = Color.White,
             fontSize = 25.sp,
             modifier = Modifier.fillMaxWidth()
@@ -62,9 +61,9 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         SignInSignUpTextField(
-            label = "wavve@example.com",
-            value = id,
-            onValueChange = { viewModel.updateId(it) },
+            label = "Username",
+            value = username,
+            onValueChange = { viewModel.updateUsername(it) },
             containerColor = Color.Black,
             focusedLabelColor = Color.Gray,
             unfocusedLabelColor = Color.DarkGray
@@ -72,7 +71,7 @@ fun SignUpScreen(
 
 
         Text(
-            text = "로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요.",
+            text = "이름은 8자 이하로 입력해주세요.",
             color = Color.Gray,
             fontSize = 12.sp,
             modifier = Modifier.fillMaxWidth()
@@ -96,7 +95,26 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "비밀번호는 8~20자 이내로 영문 대소문자, 숫자, 특수문자 중 3가지 이상 혼용하여 입력해 주세요.",
+            text = "비밀번호는 8자 이하로 입력해주세요.",
+            color = Color.Gray,
+            fontSize = 12.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        SignInSignUpTextField(
+            label = "Hobby",
+            value = hobby,
+            onValueChange = { viewModel.updateHobby(it) },
+            containerColor = Color.Black,
+            focusedLabelColor = Color.Gray,
+            unfocusedLabelColor = Color.DarkGray
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "취미는 8자 이하로 입력해주세요.",
             color = Color.Gray,
             fontSize = 12.sp,
             modifier = Modifier.fillMaxWidth()
@@ -141,15 +159,11 @@ fun SignUpScreen(
                 backgroundColor = Color.Gray,
                 onClick = {
                     viewModel.signUp()
-                    when(signUpState) {
-                        is SignUpState.SignUpSuccess -> {Toast.makeText(context, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                            navigateToSignIn() }
-                        is SignUpState.SignUpFailure -> {
-                            errorMessage?.let {
-                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                            }
+                    message?.let {
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                        if (it == "회원가입 성공") {
+                            navigateToSignIn()
                         }
-                        else -> {}
                     }
                 }
             )
@@ -157,10 +171,8 @@ fun SignUpScreen(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
     SignUpScreen(navigateToSignIn = {})
 }
-

@@ -76,6 +76,6 @@ fun NavHostContainer(navController: NavHostController, modifier: Modifier) {
     ) {
         composable("home") { HomeScreen(paddingValues = PaddingValues(0.dp)) }
         composable("search") { SearchScreen(paddingValues = PaddingValues(0.dp)) }
-        composable("mypage") { MypageScreen() }
+        composable("mypage") { MypageScreen(token = String()) }
     }
 }
