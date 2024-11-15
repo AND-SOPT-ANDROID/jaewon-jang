@@ -1,5 +1,6 @@
 package org.sopt.and.auth.screen
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -79,6 +80,9 @@ fun SignInScreen(
             onClick = {
                 viewModel.signIn()
                 token?.let {
+                    val sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().putString("token", it).apply()
+
                     Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
                     navigateToMain()
                 } ?: run {

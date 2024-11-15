@@ -1,5 +1,6 @@
 package org.sopt.and.main.screen
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,12 +26,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun MypageScreen(
-    token: String,
     viewModel: MypageViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val hobby by viewModel.hobby.observeAsState("")
     val errorMessage by viewModel.errorMessage.observeAsState()
+
+    val sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+    val token = sharedPreferences.getString("token", "") ?: ""
 
     LaunchedEffect(Unit) {
         viewModel.fetchMyHobby(token)
@@ -89,5 +92,5 @@ fun ProfileSection(hobby: String) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewMyScreen() {
-    MypageScreen(token = "sample_token")
+    MypageScreen()
 }

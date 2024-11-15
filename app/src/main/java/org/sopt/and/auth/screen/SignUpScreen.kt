@@ -31,6 +31,8 @@ fun SignUpScreen(
     val hobby by viewModel.hobby.observeAsState("")
     val context = LocalContext.current
     val message by viewModel.message.observeAsState()
+    val userNumber by viewModel.userNumber.observeAsState()
+
 
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -159,10 +161,14 @@ fun SignUpScreen(
                 backgroundColor = Color.Gray,
                 onClick = {
                     viewModel.signUp()
-                    message?.let {
-                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                        if (it == "회원가입 성공") {
-                            navigateToSignIn()
+                    message?.let { msg ->
+                        if (msg == "회원가입 성공") {
+                            userNumber?.let { number ->
+                                Toast.makeText(context, "회원가입 성공! 유저 번호: $number", Toast.LENGTH_SHORT).show()
+                                navigateToSignIn()
+                            }
+                        } else {
+                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

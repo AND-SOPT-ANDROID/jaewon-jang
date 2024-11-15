@@ -23,6 +23,9 @@ class SignUpViewModel : ViewModel() {
     private val _message = MutableLiveData<String?>()
     val message: LiveData<String?> get() = _message
 
+    private val _userNumber = MutableLiveData<Int>()
+    val userNumber: LiveData<Int> get() = _userNumber
+
     private val apiService = ServicePool.apiService
 
     fun updateUsername(newUsername: String) {
@@ -50,7 +53,12 @@ class SignUpViewModel : ViewModel() {
         val request = SignUpRequestDto(username, password, hobby)
         apiService.registerUser(request).enqueue(object : Callback<SignUpResponseDto> {
             override fun onResponse(call: Call<SignUpResponseDto>, response: Response<SignUpResponseDto>) {
-                _message.value = if (response.isSuccessful) "회원가입 성공" else "회원가입 실패: ${response.code()}"
+                if (response.isSuccessful) {
+                    _message.value = "회원가입 성공"
+                    _userNumber.value = response.body()?.result?.no
+                } else {
+                    _message.value = "회원가입 실패: ${response.code()}"
+                }
             }
 
             override fun onFailure(call: Call<SignUpResponseDto>, t: Throwable) {
