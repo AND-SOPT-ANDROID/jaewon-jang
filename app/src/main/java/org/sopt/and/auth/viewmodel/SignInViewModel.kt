@@ -1,44 +1,61 @@
 package org.sopt.and.auth.viewmodel
 
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-
+import org.sopt.and.data.api.ServicePool
+import org.sopt.and.data.dto.LoginRequestDto
+import org.sopt.and.data.dto.LoginResponseDto
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignInViewModel : ViewModel() {
-    private val _id = MutableLiveData<String>()
-    val id: LiveData<String> get() = _id
+    private val apiService = ServicePool.apiService
+
+    private val _username = MutableLiveData<String>()
+    val username: LiveData<String> get() = _username
 
     private val _password = MutableLiveData<String>()
     val password: LiveData<String> get() = _password
 
+    private val _token = MutableLiveData<String?>()
+    val token: LiveData<String?> get() = _token
+
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
-    fun updateId(newId: String) {
-        _id.value = newId
+    fun updateUsername(newUsername: String) {
+        _username.value = newUsername
     }
 
     fun updatePassword(newPassword: String) {
         _password.value = newPassword
     }
 
-    fun isValidInput(): Boolean {
-        return validateInput(_id.value ?: "", _password.value ?: "")
-    }
+    fun signIn() {
+        val username = _username.value ?: ""
+        val password = _password.value ?: ""
 
-    private fun validateInput(id: String, password: String): Boolean {
-        return when {
-            !Patterns.EMAIL_ADDRESS.matcher(id).matches() -> {
-                _errorMessage.value = "유효한 이메일을 입력하세요."
-                false
-            }
-            password.length < 8 -> {
-                _errorMessage.value = "비밀번호는 8자 이상이어야 합니다."
-                false
-            }
-            else -> true
+        if (username.isEmpty() || password.isEmpty()) {
+            _errorMessage.value = "ID와 비밀번호를 입력하세요."
+            return
         }
+
+        val request = LoginRequestDto(username, password)
+        apiService.loginUser(request).enqueue(object : Callback<LoginResponseDto> {
+            override fun onResponse(call: Call<LoginResponseDto>, response: Response<LoginResponseDto>) {
+                if (response.isSuccessful) {
+                    _token.value = response.body()?.result?.token
+                    _errorMessage.value = "로그인 성공"
+                } else {
+                    _errorMessage.value = "로그인 실패: ${response.code()}"
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponseDto>, t: Throwable) {
+                _errorMessage.value = "로그인 실패: ${t.message}"
+            }
+        })
     }
 }

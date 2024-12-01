@@ -1,5 +1,6 @@
 package org.sopt.and.auth.screen
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,8 +32,9 @@ fun SignInScreen(
     viewModel: SignInViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    val id by viewModel.id.observeAsState("")
+    val username by viewModel.username.observeAsState("")
     val password by viewModel.password.observeAsState("")
+    val token by viewModel.token.observeAsState()
     val errorMessage by viewModel.errorMessage.observeAsState()
 
     var passwordVisible by remember { mutableStateOf(false) }
@@ -54,15 +56,15 @@ fun SignInScreen(
         Spacer(modifier = Modifier.height(60.dp))
 
         SignInSignUpTextField(
-            label = "이메일 주소 또는 아이디",
-            value = id,
-            onValueChange = { viewModel.updateId(it) }
+            label = "Username",
+            value = username,
+            onValueChange = { viewModel.updateUsername(it) }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         SignInSignUpTextField(
-            label = "비밀번호",
+            label = "Password",
             value = password,
             onValueChange = { viewModel.updatePassword(it) },
             isPassword = true,
@@ -76,9 +78,14 @@ fun SignInScreen(
             text = "로그인",
             backgroundColor = Color.Blue,
             onClick = {
-                if (viewModel.isValidInput()) {
+                viewModel.signIn()
+                token?.let {
+                    val sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().putString("token", it).apply()
+
+                    Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
                     navigateToMain()
-                } else {
+                } ?: run {
                     errorMessage?.let {
                         Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                     }
