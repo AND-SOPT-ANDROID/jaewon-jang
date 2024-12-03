@@ -1,4 +1,4 @@
-package org.sopt.and.auth.screen
+package org.sopt.and.presentaion.auth.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -14,12 +14,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.sopt.and.auth.viewmodel.SignUpViewModel
-import org.sopt.and.auth.component.SignInSignUpTextField
-import org.sopt.and.auth.component.SignInSignUpButton
+import org.sopt.and.presentaion.auth.viewmodel.SignUpViewModel
+import org.sopt.and.presentaion.auth.component.SignInSignUpTextField
+import org.sopt.and.presentaion.auth.component.SignInSignUpButton
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
-import org.sopt.and.auth.component.SocialLoginIcon
+import org.sopt.and.presentaion.auth.component.SocialLoginIcon
 
 @Composable
 fun SignUpScreen(

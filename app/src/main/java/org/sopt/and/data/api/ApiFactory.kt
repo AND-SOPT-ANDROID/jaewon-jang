@@ -9,7 +9,7 @@ import org.sopt.and.BuildConfig
 import retrofit2.Retrofit
 
 object ApiFactory {
-    private const val BASE_URL: String = BuildConfig.BASE_URL
+    private val BASE_URL: String = BuildConfig.BASE_URL
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

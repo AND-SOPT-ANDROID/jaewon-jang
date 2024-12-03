@@ -1,4 +1,4 @@
-package org.sopt.and.auth.viewmodel
+package org.sopt.and.presentaion.auth.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,17 +1,18 @@
-package org.sopt.and.auth.viewmodel
+package org.sopt.and.presentaion.auth.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.sopt.and.data.api.ServicePool
+import org.sopt.and.presentaion.auth.repository.AuthRepository
 import org.sopt.and.data.dto.LoginRequestDto
 import org.sopt.and.data.dto.LoginResponseDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignInViewModel : ViewModel() {
-    private val apiService = ServicePool.apiService
+class SignInViewModel(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _username = MutableLiveData<String>()
     val username: LiveData<String> get() = _username
@@ -43,7 +44,7 @@ class SignInViewModel : ViewModel() {
         }
 
         val request = LoginRequestDto(username, password)
-        apiService.loginUser(request).enqueue(object : Callback<LoginResponseDto> {
+        authRepository.login(request).enqueue(object : Callback<LoginResponseDto> {
             override fun onResponse(call: Call<LoginResponseDto>, response: Response<LoginResponseDto>) {
                 if (response.isSuccessful) {
                     _token.value = response.body()?.result?.token

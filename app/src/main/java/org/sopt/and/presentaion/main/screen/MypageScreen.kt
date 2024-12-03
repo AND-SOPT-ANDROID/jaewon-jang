@@ -1,4 +1,4 @@
-package org.sopt.and.main.screen
+package org.sopt.and.presentaion.main.screen
 
 import android.content.Context
 import android.widget.Toast
@@ -15,13 +15,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.sopt.and.main.componet.MypageContentSection
-import org.sopt.and.main.componet.MypageProfileActionButtons
-import org.sopt.and.main.componet.MypageProfileEmail
-import org.sopt.and.main.componet.MypageProfileImage
-import org.sopt.and.main.componet.MypagePurchaseButton
-import org.sopt.and.main.componet.MypagePurchaseMessage
-import org.sopt.and.main.viewmodel.MypageViewModel
+import org.sopt.and.presentaion.main.componet.MypageContentSection
+import org.sopt.and.presentaion.main.componet.MypageProfileActionButtons
+import org.sopt.and.presentaion.main.componet.MypageProfileEmail
+import org.sopt.and.presentaion.main.componet.MypageProfileImage
+import org.sopt.and.presentaion.main.componet.MypagePurchaseButton
+import org.sopt.and.presentaion.main.componet.MypagePurchaseMessage
+import org.sopt.and.presentaion.main.viewmodel.MypageViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable

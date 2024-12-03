@@ -1,4 +1,4 @@
-package org.sopt.and.auth.screen
+package org.sopt.and.presentaion.auth.screen
 
 import android.content.Context
 import android.widget.Toast
@@ -18,19 +18,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.R
-import org.sopt.and.auth.viewmodel.SignInViewModel
-import org.sopt.and.auth.component.SignInSignUpButton
-import org.sopt.and.auth.component.SignInSignUpTextField
-import androidx.lifecycle.viewmodel.compose.viewModel
-import org.sopt.and.auth.component.SocialLoginIcon
+import org.sopt.and.presentaion.auth.viewmodel.SignInViewModel
+import org.sopt.and.presentaion.auth.component.SignInSignUpButton
+import org.sopt.and.presentaion.auth.component.SignInSignUpTextField
+import org.sopt.and.presentaion.auth.component.SocialLoginIcon
+import org.sopt.and.presentaion.auth.repository.AuthRepositoryImpl
+import org.sopt.and.data.api.ServicePool
 
 
 @Composable
 fun SignInScreen(
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
-    viewModel: SignInViewModel = viewModel()
 ) {
+    val apiService = ServicePool.apiService
+    val authRepository = AuthRepositoryImpl(apiService)
+    val viewModel = SignInViewModel(authRepository)
+
     val context = LocalContext.current
     val username by viewModel.username.observeAsState("")
     val password by viewModel.password.observeAsState("")
