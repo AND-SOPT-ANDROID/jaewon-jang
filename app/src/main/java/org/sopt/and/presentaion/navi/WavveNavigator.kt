@@ -1,4 +1,4 @@
-package org.sopt.and.navi
+package org.sopt.and.presentaion.navi
 
 import androidx.navigation.NavController
 
