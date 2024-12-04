@@ -22,7 +22,7 @@ import org.sopt.and.presentaion.auth.viewmodel.SignInViewModel
 import org.sopt.and.presentaion.auth.component.SignInSignUpButton
 import org.sopt.and.presentaion.auth.component.SignInSignUpTextField
 import org.sopt.and.presentaion.auth.component.SocialLoginIcon
-import org.sopt.and.presentaion.auth.repository.AuthRepositoryImpl
+import org.sopt.and.data.repository.AuthRepositoryImpl
 import org.sopt.and.data.api.ServicePool
 
 

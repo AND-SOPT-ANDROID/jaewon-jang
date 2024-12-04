@@ -1,4 +1,4 @@
-package org.sopt.and.presentaion.auth.repository
+package org.sopt.and.data.repository
 
 import org.sopt.and.data.api.ApiService
 import org.sopt.and.data.dto.LoginRequestDto

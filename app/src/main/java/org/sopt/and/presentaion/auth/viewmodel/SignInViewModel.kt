@@ -3,7 +3,7 @@ package org.sopt.and.presentaion.auth.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.sopt.and.presentaion.auth.repository.AuthRepository
+import org.sopt.and.data.repository.AuthRepository
 import org.sopt.and.data.dto.LoginRequestDto
 import org.sopt.and.data.dto.LoginResponseDto
 import retrofit2.Call
