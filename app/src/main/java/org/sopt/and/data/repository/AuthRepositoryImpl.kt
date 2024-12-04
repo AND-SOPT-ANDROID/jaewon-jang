@@ -1,8 +1,12 @@
 package org.sopt.and.data.repository
 
 import org.sopt.and.data.api.ApiService
+import org.sopt.and.data.dto.ApiResponse
+import org.sopt.and.data.dto.HobbyDto
 import org.sopt.and.data.dto.LoginRequestDto
 import org.sopt.and.data.dto.LoginResponseDto
+import org.sopt.and.data.dto.SignUpRequestDto
+import org.sopt.and.data.dto.SignUpResponseDto
 import retrofit2.Call
 
 class AuthRepositoryImpl(
@@ -10,5 +14,13 @@ class AuthRepositoryImpl(
 ) : AuthRepository {
     override fun login(request: LoginRequestDto): Call<LoginResponseDto> {
         return apiService.loginUser(request)
+    }
+
+    override fun register(request: SignUpRequestDto): Call<SignUpResponseDto> {
+        return apiService.registerUser(request)
+    }
+
+    override fun getMyHobby(token: String): Call<ApiResponse<HobbyDto>> {
+        return apiService.getMyHobby(token)
     }
 }

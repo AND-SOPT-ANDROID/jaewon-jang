@@ -6,13 +6,16 @@ import androidx.lifecycle.ViewModel
 import org.sopt.and.data.api.ServicePool
 import org.sopt.and.data.dto.ApiResponse
 import org.sopt.and.data.dto.HobbyDto
+import org.sopt.and.data.repository.AuthRepository
+import org.sopt.and.data.repository.AuthRepositoryImpl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MypageViewModel : ViewModel() {
-    private val apiService = ServicePool.apiService
-
+class MypageViewModel(
+    private val authRepository: AuthRepository = AuthRepositoryImpl(ServicePool.apiService)
+) : ViewModel() {
+    // MutableLiveData 선언
     private val _hobby = MutableLiveData<String?>()
     val hobby: LiveData<String?> get() = _hobby
 
@@ -20,7 +23,7 @@ class MypageViewModel : ViewModel() {
     val errorMessage: LiveData<String?> get() = _errorMessage
 
     fun fetchMyHobby(token: String) {
-        apiService.getMyHobby(token).enqueue(object : Callback<ApiResponse<HobbyDto>> {
+        authRepository.getMyHobby(token).enqueue(object : Callback<ApiResponse<HobbyDto>> {
             override fun onResponse(call: Call<ApiResponse<HobbyDto>>, response: Response<ApiResponse<HobbyDto>>) {
                 if (response.isSuccessful) {
                     _hobby.value = response.body()?.result?.hobby
@@ -35,3 +38,4 @@ class MypageViewModel : ViewModel() {
         })
     }
 }
+
