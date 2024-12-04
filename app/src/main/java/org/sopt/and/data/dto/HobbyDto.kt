@@ -4,7 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HobbyResponseDto(
-    @SerialName("result") val result: HobbyDto
+data class HobbyDto(
+    @SerialName("hobby") val hobby: String
 )
-
