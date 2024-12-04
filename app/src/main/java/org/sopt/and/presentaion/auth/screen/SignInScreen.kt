@@ -33,7 +33,7 @@ fun SignInScreen(
 ) {
     val apiService = ServicePool.apiService
     val authRepository = AuthRepositoryImpl(apiService)
-    val viewModel = SignInViewModel(authRepository)
+    val viewModel = remember { SignInViewModel(authRepository) }
 
     val context = LocalContext.current
     val username by viewModel.username.observeAsState("")
@@ -83,19 +83,20 @@ fun SignInScreen(
             backgroundColor = Color.Blue,
             onClick = {
                 viewModel.signIn()
-                token?.let {
+                if (token != null) {
                     val sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
-                    sharedPreferences.edit().putString("token", it).apply()
+                    sharedPreferences.edit().putString("token", token).apply()
 
                     Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
                     navigateToMain()
-                } ?: run {
+                } else {
                     errorMessage?.let {
                         Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         )
+
 
         Spacer(modifier = Modifier.height(5.dp))
 

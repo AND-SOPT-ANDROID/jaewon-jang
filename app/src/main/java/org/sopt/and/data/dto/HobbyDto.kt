@@ -7,3 +7,5 @@ import kotlinx.serialization.Serializable
 data class HobbyDto(
     @SerialName("hobby") val hobby: String
 )
+
+

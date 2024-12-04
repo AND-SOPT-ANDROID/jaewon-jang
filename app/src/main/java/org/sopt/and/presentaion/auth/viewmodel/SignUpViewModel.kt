@@ -29,8 +29,6 @@ class SignUpViewModel(
     private val _userNumber = MutableLiveData<Int>()
     val userNumber: LiveData<Int> get() = _userNumber
 
-    private val apiService = ServicePool.apiService
-
     fun updateUsername(newUsername: String) {
         _username.value = newUsername
     }
