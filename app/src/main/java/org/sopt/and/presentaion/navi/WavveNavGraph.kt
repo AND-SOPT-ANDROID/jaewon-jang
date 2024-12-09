@@ -1,11 +1,11 @@
-package org.sopt.and.navi
+package org.sopt.and.presentaion.navi
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import org.sopt.and.main.screen.MainScreen
-import org.sopt.and.auth.screen.SignInScreen
-import org.sopt.and.auth.screen.SignUpScreen
+import org.sopt.and.presentaion.main.screen.MainScreen
+import org.sopt.and.presentaion.auth.screen.SignInScreen
+import org.sopt.and.presentaion.auth.screen.SignUpScreen
 
 fun NavGraphBuilder.wavveNavGraph(
     navController: NavHostController,

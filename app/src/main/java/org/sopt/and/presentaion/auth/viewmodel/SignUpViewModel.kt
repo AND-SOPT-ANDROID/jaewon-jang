@@ -1,4 +1,4 @@
-package org.sopt.and.auth.viewmodel
+package org.sopt.and.presentaion.auth.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,12 +6,15 @@ import androidx.lifecycle.ViewModel
 import org.sopt.and.data.api.ServicePool
 import org.sopt.and.data.dto.SignUpRequestDto
 import org.sopt.and.data.dto.SignUpResponseDto
+import org.sopt.and.data.repository.AuthRepository
+import org.sopt.and.data.repository.AuthRepositoryImpl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignUpViewModel : ViewModel() {
-    private val _username = MutableLiveData<String>()
+class SignUpViewModel(
+    private val authRepository: AuthRepository = AuthRepositoryImpl(ServicePool.apiService)
+) : ViewModel() {    private val _username = MutableLiveData<String>()
     val username: LiveData<String> get() = _username
 
     private val _password = MutableLiveData<String>()
@@ -25,8 +28,6 @@ class SignUpViewModel : ViewModel() {
 
     private val _userNumber = MutableLiveData<Int>()
     val userNumber: LiveData<Int> get() = _userNumber
-
-    private val apiService = ServicePool.apiService
 
     fun updateUsername(newUsername: String) {
         _username.value = newUsername
@@ -51,7 +52,7 @@ class SignUpViewModel : ViewModel() {
         }
 
         val request = SignUpRequestDto(username, password, hobby)
-        apiService.registerUser(request).enqueue(object : Callback<SignUpResponseDto> {
+        authRepository.register(request).enqueue(object : Callback<SignUpResponseDto> {
             override fun onResponse(call: Call<SignUpResponseDto>, response: Response<SignUpResponseDto>) {
                 if (response.isSuccessful) {
                     _message.value = "회원가입 성공"

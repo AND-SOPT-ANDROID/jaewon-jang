@@ -24,7 +24,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BASE_URL", properties["base.url"].toString())
+        buildConfigField("String", "BASE_URL", "\"${properties["base.url"] ?: "https://default-url.com/"}\"")
 
     }
 
@@ -49,6 +49,7 @@ android {
         buildConfig = true
     }
 }
+
 
 dependencies {
 
