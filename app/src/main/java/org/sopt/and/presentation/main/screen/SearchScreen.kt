@@ -1,4 +1,4 @@
-package org.sopt.and.presentaion.main.screen
+package org.sopt.and.presentation.main.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues

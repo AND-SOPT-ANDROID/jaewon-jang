@@ -1,4 +1,4 @@
-package org.sopt.and.presentaion.main.screen
+package org.sopt.and.presentation.main.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,10 +12,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
-import org.sopt.and.presentaion.main.componet.HomeBannerView
-import org.sopt.and.presentaion.main.componet.HomeListSection
-import org.sopt.and.presentaion.main.componet.HomeTopBar
-import org.sopt.and.presentaion.main.viewmodel.HomeViewModel
+import org.sopt.and.presentation.main.componet.HomeBannerView
+import org.sopt.and.presentation.main.componet.HomeListSection
+import org.sopt.and.presentation.main.componet.HomeTopBar
+import org.sopt.and.presentation.main.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(

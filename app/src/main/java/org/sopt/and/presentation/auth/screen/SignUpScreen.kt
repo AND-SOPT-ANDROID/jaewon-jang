@@ -1,4 +1,4 @@
-package org.sopt.and.presentaion.auth.screen
+package org.sopt.and.presentation.auth.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -14,27 +14,34 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.sopt.and.presentaion.auth.viewmodel.SignUpViewModel
-import org.sopt.and.presentaion.auth.component.SignInSignUpTextField
-import org.sopt.and.presentaion.auth.component.SignInSignUpButton
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.sopt.and.presentation.auth.viewmodel.SignUpViewModel
+import org.sopt.and.presentation.auth.component.SignInSignUpTextField
+import org.sopt.and.presentation.auth.component.SignInSignUpButton
 import org.sopt.and.R
-import org.sopt.and.presentaion.auth.component.SocialLoginIcon
+import org.sopt.and.data.api.ServicePool
+import org.sopt.and.data.repository.AuthRepositoryImpl
+import org.sopt.and.data.repository.ViewModelFactory
+import org.sopt.and.presentation.auth.component.SocialLoginIcon
+import org.sopt.and.presentation.auth.contract.SignUpIntent
 
 @Composable
 fun SignUpScreen(
     navigateToSignIn: () -> Unit,
-    viewModel: SignUpViewModel = viewModel()
 ) {
-    val username by viewModel.username.observeAsState("")
-    val password by viewModel.password.observeAsState("")
-    val hobby by viewModel.hobby.observeAsState("")
     val context = LocalContext.current
-    val message by viewModel.message.observeAsState()
-    val userNumber by viewModel.userNumber.observeAsState()
+    val authRepository = AuthRepositoryImpl(ServicePool.apiService)
+    val factory = ViewModelFactory(authRepository, context)
+    val viewModel: SignUpViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = factory)
 
+    val state by viewModel.state.collectAsState()
 
-    var passwordVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(state.successMessage) {
+        state.successMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearSuccessMessage()
+            navigateToSignIn()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -64,11 +71,8 @@ fun SignUpScreen(
 
         SignInSignUpTextField(
             label = "Username",
-            value = username,
-            onValueChange = { viewModel.updateUsername(it) },
-            containerColor = Color.Black,
-            focusedLabelColor = Color.Gray,
-            unfocusedLabelColor = Color.DarkGray
+            value = state.username,
+            onValueChange = { viewModel.sendIntent(SignUpIntent.UpdateUsername(it)) }
         )
 
 
@@ -82,15 +86,10 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         SignInSignUpTextField(
-            label = "Wavve 비밀번호 설정",
-            value = password,
-            onValueChange = { viewModel.updatePassword(it) },
-            isPassword = true,
-            passwordVisible = passwordVisible,
-            onPasswordVisibilityChange = { passwordVisible = !passwordVisible },
-            containerColor = Color.Black,
-            focusedLabelColor = Color.Gray,
-            unfocusedLabelColor = Color.DarkGray
+            label = "Password",
+            value = state.password,
+            onValueChange = { viewModel.sendIntent(SignUpIntent.UpdatePassword(it)) },
+            isPassword = true
         )
 
 
@@ -107,12 +106,10 @@ fun SignUpScreen(
 
         SignInSignUpTextField(
             label = "Hobby",
-            value = hobby,
-            onValueChange = { viewModel.updateHobby(it) },
-            containerColor = Color.Black,
-            focusedLabelColor = Color.Gray,
-            unfocusedLabelColor = Color.DarkGray
+            value = state.hobby,
+            onValueChange = { viewModel.sendIntent(SignUpIntent.UpdateHobby(it)) }
         )
+
 
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -159,23 +156,21 @@ fun SignUpScreen(
             SignInSignUpButton(
                 text = "Wavve 회원가입",
                 backgroundColor = Color.Gray,
-                onClick = {
-                    viewModel.signUp()
-                    message?.let { msg ->
-                        if (msg == "회원가입 성공") {
-                            userNumber?.let { number ->
-                                Toast.makeText(context, "회원가입 성공! 유저 번호: $number", Toast.LENGTH_SHORT).show()
-                                navigateToSignIn()
-                            }
-                        } else {
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                onClick = { viewModel.sendIntent(SignUpIntent.SignUp) }
+            )
+
+            state.successMessage?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                navigateToSignIn()
+            }
+
+            state.errorMessage?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
-            )
+
         }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
