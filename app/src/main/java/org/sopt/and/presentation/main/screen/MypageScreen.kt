@@ -1,48 +1,50 @@
-package org.sopt.and.presentaion.main.screen
+package org.sopt.and.presentation.main.screen
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.sopt.and.presentaion.main.componet.MypageContentSection
-import org.sopt.and.presentaion.main.componet.MypageProfileActionButtons
-import org.sopt.and.presentaion.main.componet.MypageProfileEmail
-import org.sopt.and.presentaion.main.componet.MypageProfileImage
-import org.sopt.and.presentaion.main.componet.MypagePurchaseButton
-import org.sopt.and.presentaion.main.componet.MypagePurchaseMessage
-import org.sopt.and.presentaion.main.viewmodel.MypageViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.sopt.and.data.api.ServicePool
+import org.sopt.and.data.repository.AuthRepositoryImpl
+import org.sopt.and.data.repository.ViewModelFactory
+import org.sopt.and.presentation.main.componet.MypageContentSection
+import org.sopt.and.presentation.main.componet.MypageProfileActionButtons
+import org.sopt.and.presentation.main.componet.MypageProfileEmail
+import org.sopt.and.presentation.main.componet.MypageProfileImage
+import org.sopt.and.presentation.main.componet.MypagePurchaseButton
+import org.sopt.and.presentation.main.componet.MypagePurchaseMessage
+import org.sopt.and.presentation.main.viewmodel.MypageViewModel
+import org.sopt.and.presentation.main.contract.MypageIntent
 
 @Composable
-fun MypageScreen(
-    viewModel: MypageViewModel = viewModel()
-) {
+fun MypageScreen() {
     val context = LocalContext.current
-    val hobby by viewModel.hobby.observeAsState("")
-    val errorMessage by viewModel.errorMessage.observeAsState()
+    val authRepository = AuthRepositoryImpl(ServicePool.apiService)
+    val factory = ViewModelFactory(authRepository, context)
+    val viewModel: MypageViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = factory)
 
-    val sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
-    val token = sharedPreferences.getString("token", "") ?: ""
+    val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchMyHobby(token)
+        viewModel.sendIntent(MypageIntent.FetchHobby)
     }
 
-    errorMessage?.let {
-        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            viewModel.clearErrorMessage()
+        }
     }
-
 
     LazyColumn(
         modifier = Modifier
@@ -51,11 +53,15 @@ fun MypageScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        item { ProfileSection(hobby = hobby ?: "취미 없음") }
-
+        item {
+            ProfileSection(hobby = state.hobby ?: "취미 없음")
+        }
         item { MypageContentSection(title = "전체 시청내역", message = "시청내역이 없어요.") }
 
         item { MypageContentSection(title = "관심 프로그램", message = "관심 프로그램이 없어요.") }
+    }
+    state.errorMessage?.let {
+        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
     }
 }
 

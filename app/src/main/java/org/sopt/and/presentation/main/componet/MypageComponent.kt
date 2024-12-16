@@ -1,4 +1,4 @@
-package org.sopt.and.presentaion.main.componet
+package org.sopt.and.presentation.main.componet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

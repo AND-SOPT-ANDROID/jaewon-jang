@@ -1,4 +1,4 @@
-package org.sopt.and.presentaion.auth.component
+package org.sopt.and.presentation.auth.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

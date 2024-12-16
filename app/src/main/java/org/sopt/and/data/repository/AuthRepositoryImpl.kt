@@ -1,5 +1,6 @@
 package org.sopt.and.data.repository
 
+import android.util.Log
 import org.sopt.and.data.api.ApiService
 import org.sopt.and.data.dto.ApiResponse
 import org.sopt.and.data.dto.HobbyDto
@@ -12,18 +13,22 @@ import retrofit2.Call
 class AuthRepositoryImpl(
     private val apiService: ApiService
 ) : AuthRepository {
+    companion object {
+        private const val TAG = "AuthRepositoryImpl"
+    }
+
     override fun login(request: LoginRequestDto): Call<LoginResponseDto> {
-        println("AuthRepositoryImpl - 요청 데이터: username=${request.username}, password=${request.password}")
+        Log.d(TAG, "Login request: username=${request.username}, password=${request.password}")
         return apiService.loginUser(request)
     }
 
     override fun register(request: SignUpRequestDto): Call<SignUpResponseDto> {
-        println("SignUpRequestDto: username=${request.username}, password=${request.password}, hobby=${request.hobby}")
+        Log.d(TAG, "SignUp request: username=${request.username}, password=${request.password}, hobby=${request.hobby}")
         return apiService.registerUser(request)
     }
 
-
     override fun getMyHobby(token: String): Call<ApiResponse<HobbyDto>> {
+        Log.d(TAG, "Fetching hobby with token: $token")
         return apiService.getMyHobby(token)
     }
 }

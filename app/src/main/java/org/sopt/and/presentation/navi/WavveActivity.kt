@@ -1,4 +1,4 @@
-package org.sopt.and.presentaion.navi
+package org.sopt.and.presentation.navi
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
